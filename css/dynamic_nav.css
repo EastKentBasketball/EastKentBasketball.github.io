@@ -1,0 +1,132 @@
+---
+layout: blank
+---
+/*Version {{ site.version_number }}*/
+/*{{ site.urllive }}*/
+
+:root{
+	--dynamic-nav-padding: 8px;
+	--dynamic-nav-theme: #555;	
+	--dynamic-nav-dropdown-background: #fff;
+	--dynamic-nav-dropdown-text: #000;	
+	--dynamic-nav-hover-text: #fff;		
+	--dynamic-nav-hover-background: #555;	
+}
+
+.dynamicNav > li > span{
+	display: inline-flex;
+}
+
+.dynamicNav li{
+	display: none;
+}
+.dynamicNavExtra{
+	float: right;
+	margin: 0;
+}
+
+.dynamicNav svg{
+	padding-left: calc(var(--dynamic-nav-padding) / 2);
+}
+
+.dynamicNav > li:first-child{
+	display: block;
+}
+
+.dynamicNav b, .dynamicNavMenu{
+	float: right;
+}
+
+.dynamicNav, .dynamicNav ul, .dynamicNav li  {
+	padding: 0;
+	margin: 0;
+}
+
+.dynamicNav span, .dynamicNav a {
+	padding: var(--dynamic-nav-padding) calc(var(--dynamic-nav-padding) * 2);
+}
+
+.dynamicNavMenu, .dynamicNavExtra {
+    padding: var(--dynamic-nav-padding);
+}
+
+.dynamicNavExtra {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.dynamicNav span {
+	display: block;
+}
+
+.dynamicNav a{
+	display: block;
+}
+
+ .dynamicNav  > li:first-child >  a, .dynamicNav b, .dynamicNavMenu {
+	display: inline-block;
+}
+
+.dynamicNav li > ul, .dynamicNav > li > ul{
+	background-color: var(--dynamic-nav-dropdown-background);
+	color: var(--dynamic-nav-dropdown-text);
+	border: 1px solid var(--dynamic-nav-dropdown-text);
+}
+
+@media (min-width: 600px) {
+	.dynamicNav span {
+		display: inline-block;
+	}
+	
+	.dynamicNavMenu{
+		display: none;
+	}
+	
+	.dynamicNav, .dynamicNav ul, .dynamicNav li,  .dynamicNav > li:first-child  {
+		display: inline-block;
+	}
+
+	.dynamicNav ul {
+		display: none;
+	}
+
+	.dynamicNav a, .dynamicNav span {
+		 width: 100%;
+	}
+	
+	.dynamicNav li:hover > ul{
+		display: inline-block;
+	}
+
+	.dynamicNav > li:hover > ul{
+		display: block;
+	}
+	
+	.dynamicNav li:hover {
+		background-color: var(--dynamic-nav-hover-background);
+		color: var(--dynamic-nav-hover-text);
+	}
+
+	.dynamicNav li ul{
+		box-shadow: 0 var(--dynamic-nav-padding)  var(--dynamic-nav-padding)  var(--dynamic-nav-theme);
+		display: none;
+		position: absolute;
+		min-width: 160px;
+		margin: 0;
+		padding: 0;
+		z-index: 1000;
+	}
+
+	.dynamicNav li ul li{
+		width: 100%;
+		display: block;
+		text-align: left;
+		border: none;
+		white-space: normal;
+		float: none;
+		outline: 0;
+	}	
+}
+
+
+

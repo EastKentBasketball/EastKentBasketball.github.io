@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="top: 5px;right: 5px;position: absolute;" onclick="toggleNav();">
+	<path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path>
+</svg>
+<div id="navContent">
+	<div id="navMenu">
+		<ul>
+			{% for page in site.pages %}
+				{% if page.nav == "1" %}
+					<li><a href="{{ page.url }}">{{ page.title }}</a></li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+	<hr>
+</div>

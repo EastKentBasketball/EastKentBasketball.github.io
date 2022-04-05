@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<base href="{% case site.environment %}{% when 'live' %}{{ site.urllive }}{% when 'jekyll' %}{{ site.urljekyll }}{% when 'iis' %}{{ site.urliis }}{% endcase %}" />
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<meta content="utf-8" http-equiv="encoding">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="robots" content="index,follow">
+		<title>{{ site.title }}</title>
+		<meta name="description" content="###">
+		<meta name="keywords" content="###">
+		<link rel="stylesheet" type="text/css" href="css/default.css">
+		<link rel="stylesheet" type="text/css" href="css/dropdown.css">
+		<link rel="stylesheet" type="text/css" href="css/tables.css">
+		<link rel="stylesheet" type="text/css" href="css/slidermulti.css">
+		<script src="javascript/docready.js"></script>
+		<script src="javascript/helper.js"></script>
+		<script src="javascript/default.js"></script>
+		<script src="javascript/dropdown.js"></script>
+		<script src="javascript/tables.js"></script>
+		<script src="javascript/slidermulti.js"></script>
+		<link rel="icon" type="image/png" href="images/favicon.png">
+		<script>
+			docReady(function () {
+				var currentLocation = "";
+				createSubNav(currentLocation);
+				var slcElem = getElem("slcProjects");
+				if(slcElem != null){
+					slcElem.innerHTML = "<option disabled selected value=''>Please Choose</option>" + projectOptions + "<option value='Other'>Other</option>";
+				}
+				reinitsliders();
+			});
+		</script>
+	</head>
+	<body>
+		<noscript>
+            <div class="modal" style="width:100%;">
+                <div class="modal-content">
+                    <header>
+                        Javascript Error
+                    </header>
+                    <p>
+                        Your browser does not support javascript or javascript has been disabled.
+                        <br />
+                        <br />
+                        Please allow javascript or update your browser for full website functionality. Click <u><a href="https://duckduckgo.com/?q=how+to+enable+javascript" target="_blank">here</a></u> for help.
+                        <br />
+                        <br />
+                        <u><a href="?">Refresh Page</a></u>
+                    </p>
+                </div>
+            </div>
+        </noscript>
+		<header id="headerContainer"><div id="headerContent">{% include header.html %}</div></header>
+		<svg id="navOpenContainer" xmlns="http://www.w3.org/2000/svg" onclick="toggleModal('navContainer');" viewBox="0 0 24 24"><path d="M4 22h-4v-4h4v4zm0-12h-4v4h4v-4zm0-8h-4v4h4v-4zm3 0v4h17v-4h-17zm0 12h17v-4h-17v4zm0 8h17v-4h-17v4z"/></svg>
+		<div id="navContainer" style="width: 0px;"></div>
+		<main id="pageContainer">
+			<div id="pageContent">			
+				{% if page.breadcrumbs == "1" %}
+					<script>
+						docReady(function () {
+							var currentLocation = "{{ page.path }}";
+							createSubNav(currentLocation);
+							createBreadCrumbs(currentLocation);
+						});
+					</script>
+					<div id="breadCrumbs"></div>
+				{% endif %}
+				<h1>{{ page.title }}</h1>
+				{{ content }}
+				{% if page.subnav == "1" %}
+					<script>
+						docReady(function () {
+							var currentLocation = "{{ page.path }}";
+							createSubNav(currentLocation);
+						});
+					</script>
+					<h2>Sub-Projects</h2>
+					<div id="projectLinks"></div>
+				{% endif %}
+			</div>
+		</main>
+		<footer id="footerContainer"><div id="footerContent">{% include footer.html %}</div></footer>
+		{% include message.html %}
+		<span style="display: none;">{{ site.version_number }}</span>
+	</body>
+</html>

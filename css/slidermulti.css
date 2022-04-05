@@ -1,0 +1,41 @@
+---
+layout: blank
+---
+/*Version {{ site.version_number }}*/
+/*{{ site.urllive }}*/
+:root {
+    --range-color: #eee;
+    --range-size: 15px;
+    --range-colour-connect: var(--main-color);
+    --range-colour-handle: var(--green-color);
+    --range-colour-handle-shadow: #003200;
+}
+
+.rangeHandle {
+    position: absolute;
+    z-index: 9;
+    background-color: var(--range-colour-handle);
+    text-align: center;
+    height: calc(var(--range-size)*2);
+    width: calc(var(--range-size)*2);
+    left: calc(-1 * var(--range-size));
+    top: calc((var(--range-size)/2)*-1);
+    border-radius: 25%;
+    box-shadow: inset 0 0 1px var(--range-colour-handle-shadow), inset 0 0 calc((var(--range-size)/2)) var(--range-colour-handle-shadow);
+    cursor:pointer;
+}
+
+.rangeConnector {
+    position: absolute;
+    background-color: var(--range-colour-connect);
+    height: var(--range-size);
+    border-radius: calc(var(--range-size)/2);
+}
+
+.rangeContainer {
+    width: 100%;
+    height: var(--range-size);
+    position: relative;
+    background: var(--range-color);
+    border-radius: calc(var(--range-size)/2);
+}

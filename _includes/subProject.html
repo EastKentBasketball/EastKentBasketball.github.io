@@ -1,0 +1,12 @@
+<script>
+	docReady(function () {
+		var currentLocation = "{{ page.path }}";
+		createSubNav(currentLocation);
+		createBreadCrumbs(currentLocation);
+	});
+</script>
+<div>
+	<div id="breadCrumbs"></div>
+	<h1>Sub-Projects</h1>
+	<div id="projectLinks"></div>
+</div>
