@@ -30,7 +30,7 @@ github_username:  EKBA
 github_url: https://github.com/EKBA
 urliis: "http://test.EKBA.com" # the subpath of your site, e.g. /blog
 urljekyll: "http://localhost:4000" # the subpath of your site, e.g. /blog
-urllive: "https://eastkentbasketball.github.io/" # the subpath of your site, e.g. /blog
+urllive: "https://eastkentbasketball.github.io" # the subpath of your site, e.g. /blog
 environment: "live" # live || jekyll || iis
 
 version_number: "0.2.2"
