@@ -123,7 +123,7 @@ console.log(overview);
 //console.log(ResultsTable("2021/2022","mensLeague"))
 </script>
 <label class="fixed-quarter">Show Result History</label>
-<select id="slcShowTable" class="fixed-three-quarter" value="" onchange="ResultsTable('2021/2022',this.value)"><option value="womensLeague">Womens League</option><option value="mensLeague" selected>Mens League</option><option value="womensCup">Womens Cup</option></select>
+<select id="slcShowTable" class="fixed-three-quarter" value="" onchange="ResultsTable(currentSeason,this.value)"><option value="womensLeague">Womens League</option><option value="mensLeague" selected>Mens League</option><option value="womensCup">Womens Cup</option></select>
 <hr><label class="fixed-quarter">Filter Team</label>
 <input class="fixed-three-quarter" value="" onkeyup="doubleFilter(this.value)" id="inpFilterTeam"><hr>
 <table id="myTable" class="break-table"></table>
