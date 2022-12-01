@@ -71,7 +71,7 @@ function PlaceholdersFill(id) {
 }
 
 function initNav(page){
-	printArray(linkProjectsDynamic);
+	convertJson();
 	links = "<ul>" + links + "</ul>";
 	navItems = "<ul><li><a href='/'>Home</a></li>" + navItems + "</ul>";
 	var navContent = wrapPath(iconCross, "id='navClose' onclick='toggleModal(\"navContainer\");'") + "<div id='navContent'><div id='navMenu'>" + navItems + "</div><hr /></div>";
@@ -81,10 +81,29 @@ function initNav(page){
 	}
 }
 
+function getSubArray(subPath){
+	subPath = subPath || "";
+	subPath = subPath.toLowerCase() == "index.html" ? "" : subPath.toLowerCase();
+	var div = document.createElement("DIV");
+	div.innerHTML = links;
+	if(subPath == ""){
+		return getTags("UL", div)[0];
+	} else{
+		var linkElems = getTags("A", div);
+		for (var i = 0; i < linkElems.length; i++){
+			var url = linkElems[i].href.startsWith("/") ? linkElems[i].href.substring(1) : linkElems[i].href;
+			url = url.endsWith("/") ? url.substring(0, url.length - 1) : url;
+			if(url.toLowerCase().endsWith(subPath)){
+				return getTags("UL", linkElems[i].parentElement)[0];
+			}
+		}
+	}
+}
 function createSubNav(currentLocation){
 	var Elem = getElem("projectLinks");
 	if(Elem != null){
-		Elem.innerHTML = getSubArray(currentLocation).outerHTML;
+		var x = getSubArray(currentLocation);
+		Elem.innerHTML = x.outerHTML;
 	}
 }
 
@@ -107,86 +126,63 @@ function createBreadCrumbs(currentLocation){
 	}
 }
 
-function getSubArray(subPath){
-	subPath = subPath || "";
-	var div = document.createElement("DIV");
-	div.innerHTML = links;
-	if(subPath == ""){
-		return getTags("UL", div)[0];
-	} else{
-		var linkElems = getTags("A", div);
-		for (var i = 0; i < linkElems.length; i++){
-			if(linkElems[i].href.toUpperCase().endsWith(subPath.toUpperCase())){
-				return getTags("UL", linkElems[i].parentElement)[0];
+
+var arr = [];
+function convertJson(){
+	arr = linkProjectsDynamic;
+	arr = arr.sort(function (a, b) {
+		return  a.URL > b.URL;
+	})
+    for (var i = 0; i < arr.length; i++) {
+        var url = arr[i].URL.startsWith("/") ? arr[i].URL.substring(1) : arr[i].URL;
+        url = url.endsWith("/") ? url.substring(0, url.length - 1) : url;
+		var splitURL = url.toLowerCase().split("/");	
+		arr[i].SplitURL = splitURL;
+		arr[i].UrlDepth = splitURL.length;
+		arr[i].complete = false;
+        projectOptions += "<option value='" + url + "'>" + StringReplaceAll(url, "_", " ") + "</option>";
+	}
+	//var ul = document.createElement("UL");
+	customNavCreate("",arr.slice(1,arr.length));
+	//ul.innerHTML = links;
+	//test2.appendChild(ul);
+	//test.innerHTML = navItems;console.log(linkProjectsDynamic);
+}
+
+function customNavCreate(str, navList, str2){
+	links = str || links;
+	navItems = str2 || navItems;
+	navList = navList || [];
+	var downArrow = wrapPath(iconDownArrow);
+	for (var i = 0; i < navList.length; i++) {
+		for (var j = 0; j < arr.length; j++) {
+			if(arr[j].URL == navList[i].URL){
+				if(!arr[j].complete){
+					arr[j].complete = true;
+					navList[i].complete = true;
+					var subList = checkSubs(navList[i], arr);
+					var tempStr = "<li><a href='" + navList[i].URL + "'>" + navList[i].Name + "</a>";
+					if(subList.length > 0){
+						links += tempStr + "<ul>";
+						navItems += tempStr + "<span onclick='toggleNavSubMenu(this);'>" + wrapPath(iconDownArrow) + "</span>" + "<ul style='display:none;'>";						
+						customNavCreate(links, subList, navItems)
+						links += "</ul></li>";
+						navItems += "</ul></li>";
+					} else {
+						links += tempStr + "</a></li>";
+						navItems += tempStr + "</a></li>";
+					}
+				}
+				break;
 			}
 		}
 	}
 }
 
-var printArray = function(arr) {
-    links = "";
-    navItems = "";
-    var currentLevel = "";
-    for (var i = 1; i < arr.length; i++) {
-        var url = arr[i].URL;
-        if (url.startsWith("/")) {
-            url = url.substring(1);
-        }
-        if (url.endsWith("/")) {
-            url = url.substring(0, url.length - 1);
-        }
-        var currentLeveltemp = currentLevel;
-        var templateString = "";
-        templateString = "<li><a href='" + url + "'>" + arr[i].Name + "</a>";
-        links += templateString;
-        navItems += templateString;
-        projectOptions += "<option value='" + url + "'>" + StringReplaceAll(url, "_", " ") + "</option>";
-        if (i + 1 < (arr.length)) {
-            var urlp1 = arr[i + 1].URL;
-            if (urlp1.startsWith("/")) {
-                urlp1 = urlp1.substring(1);
-            }
-            if (urlp1.endsWith("/")) {
-                urlp1 = urlp1.substring(0, urlp1.length - 1);
-            }
-
-            if (urlp1.startsWith(url)) {
-                currentLevel = url;
-                links += "<ul>";
-                navItems += "<span onclick='toggleNavSubMenu(this);'>" + wrapPath(iconDownArrow) + "</span>" + "<ul style='display:none;'>";
-            }
-            if (urlp1.startsWith(currentLevel)) {} else {
-                currentLevel = "";
-            }
-        } else if (i == arr.length - 1) {
-            links += "</li>";
-            navItems += "</li>";
-            var x = currentLevel.split("/");
-            for (var j = 0; j < x.length; j++) {
-                links += "</ul>";
-                navItems += "</ul>";
-                links += "</li>";
-                navItems += "</li>";
-            }
-
-        } else {
-            currentLevel = "";
-        }
-        if (currentLevel == "" && currentLeveltemp != currentLevel) {
-            links += "</li>";
-            navItems += "</li>";
-            links += "</ul>";
-            navItems += "</ul>";
-            links += "</li>";
-            navItems += "</li>";
-        } else if (currentLevel != "" && currentLeveltemp == currentLevel && (i != arr.length - 1)) {
-            links += "</li>";
-            navItems += "</li>";
-        } else if (currentLevel == "") {
-            links += "</li>";
-            navItems += "</li>";
-        }
-    }
+function checkSubs(pos, arr2){
+	return arr2.filter(function (item) {
+		return item.SplitURL.slice(0, pos.UrlDepth).join("/") == pos.SplitURL.join("/") && item.UrlDepth == pos.UrlDepth + 1 && !item.complete;
+	});
 }
 
 function toggleNavSubMenu(node){
@@ -287,4 +283,25 @@ function decimalCount(val) {
     return val.toString().split(".")[1].length || 0;
   }
   return 0;
+}
+
+function switchFocusMode(){
+	var x = getElem("focusModeSwitch");
+	var y = -1;
+	if(x.innerHTML.toLowerCase() == "off"){
+		y = 1;
+		displayNoneByID("headerContainer");
+		displayNoneByID("footerContainer");
+		x.innerHTML = "ON";
+		x.style.background = "#0f0";
+		x.style.color = "#000";
+	} else {		
+		y=0;
+		displayBlockByID("headerContainer");
+		displayBlockByID("footerContainer");
+		x.innerHTML = "OFF";
+		x.style.background = "#f00";
+		x.style.color = "#fff";
+	}
+	setLocal("FocusMode", y);
 }
