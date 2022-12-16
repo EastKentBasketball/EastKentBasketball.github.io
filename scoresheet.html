@@ -1,0 +1,408 @@
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: SiteMaster
+nav: "1"
+title: "Scoresheet"
+path: "Scoresheet"
+breadcrumbs: "1"
+---
+{% capture contenttwo %}
+<style>
+	.a4sheet * {
+		padding: 0;
+		margin: 0;
+		border:none;
+	}
+
+	.a4sheet {
+		width: 20.5cm;
+		height: 29cm;
+		margin: auto;
+		padding: 3mm;
+		/* change the margins as you want them to be. */
+		/*border: 1px solid;*/
+		text-align: left !important;
+	}
+
+	.border-form {
+		border-bottom: 1px dotted;
+	}
+
+	.border-solid {
+		border: 1px solid;
+	}
+
+	.a4sheet hr {
+		height: 1mm;
+	}
+
+	.borderedtbl td {
+		border: 1px solid
+	}
+</style>
+<div class="a4sheet">
+	<table>
+		<tr>
+			<td>Competition</td>
+			<td class="border-form" style="width:65mm !important"></td>
+			<td>Time</td>
+			<td class="border-form" style="width:25mm !important"></td>
+			<td>Date</td>
+			<td class="border-form" style="width:25mm !important"></td>
+			<td>Match No.</td>
+			<td class="border-form" style="width:20mm !important"></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td class="border-form" style="width:100mm !important"></td>
+			<td style="text-align:center">v</td>
+			<td class="border-form" style="width:100mm !important"></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Venue</td>
+			<td class="border-form" style="width:65mm !important"></td>
+			<td>Referee</td>
+			<td class="border-form" style="width:25mm !important"></td>
+			<td>Umpire 1</td>
+			<td class="border-form" style="width:25mm !important"></td>
+			<td>Umpire 2</td>
+			<td class="border-form" style="width:25mm !important"></td>
+		</tr>
+	</table>
+	<hr />
+	<table>
+		<tr>
+			<td class="border-solid" style="width:80mm !important; border: 2px solid;">
+				<div class="clone">
+					<div style="padding:1mm;">
+						<table>
+							<tr>
+								<td>Team</td>
+								<td class="border-form" style="width:65mm !important"></td>
+							</tr>
+						</table>
+						<table>
+							<tr>
+								<td>Colour</td>
+								<td class="border-form" style="width:65mm !important"></td>
+							</tr>
+						</table>
+						<hr />
+						<div style="text-align:center; font-size:3mm">Team Fouls Period</div>
+						<table>
+							<tr>
+								<td style="width:60mm !important">
+									<table style="white-space: nowrap;width:100%;">
+										<tr>
+											<td>(1)</td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td>&nbsp;(2)</td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+										</tr>
+										<tr>
+											<td>(3)</td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td>&nbsp;(4)</td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+											<td class="border-solid" style="width:65mm !important"></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+						<div style="text-align:center; font-size:3mm">Time-outs Period</div>
+						<table>
+							<tr style="white-space: nowrap;">
+								<td>(1)&(2)</td>
+								<td class="border-solid" style="width:20mm !important"></td>
+								<td class="border-solid" style="width:20mm !important"></td>
+								<td>&nbsp;(3)&(4)</td>
+								<td class="border-solid" style="width:20mm !important"></td>
+								<td class="border-solid" style="width:20mm !important"></td>
+								<td>&nbsp;Extra</td>
+								<td class="border-solid" style="width:20mm !important"></td>
+								<td class="border-solid" style="width:20mm !important"></td>
+								<td class="border-solid" style="width:20mm !important"></td>
+							</tr>
+						</table>
+					</div>
+					<table class="borderedtbl" style="width:100%;text-align:center; border-bottom:2px solid;">
+						<colgroup>
+							<col style="border-right: 2px solid" />
+							<col />
+							<col />
+							<col style="border-right: 2px solid" />
+							<col />
+							<col />
+							<col />
+							<col />
+							<col />
+						</colgroup>
+						<tr style="border-top:2px solid;">
+							<td style="font-size:3mm" rowspan="2">Licence No.</td>
+							<td style="width:25mm" rowspan="2">Players</td>
+							<td style="font-size:3mm" rowspan="2">No.</td>
+							<td style="font-size:2mm" rowspan="2">Player In</td>
+							<td style="width:100mm" colspan="5">Fouls</td>
+						</tr>
+						<tr style="border-bottom:2px solid;">
+							<td>1</td>
+							<td>2</td>
+							<td>3</td>
+							<td>4</td>
+							<td>5</td>
+						</tr>
+						<tr class="clone" data-clones="11">
+							<td>&nbsp;</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr style="border-top:2px solid">
+							<td></td>
+							<td style="text-align:left;" colspan="5">Coach</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td style="text-align:left;" colspan="5">Assistant Coach</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</td>
+			<td class="border-solid" style="width:120mm !important; vertical-align: top; border: 2px solid;">
+				<table class="borderedtbl" style="width:100%;text-align:center; border-bottom:3px solid;">
+					<colgroup>
+						<col style="width: 4%" />
+						<col style="width: 4%" />
+						<col style="width: 4%; background:#ccc;" />
+						<col style="width: 4%" />
+						<col style="width: 4%; border-right:2px solid;" />
+						<col style="width: 4%" />
+						<col style="width: 4%" />
+						<col style="width: 4%; background:#ccc;" />
+						<col style="width: 4%" />
+						<col style="width: 4%; border-right:2px solid;" />
+						<col style="width: 4%" />
+						<col style="width: 4%" />
+						<col style="width: 4%; background:#ccc;" />
+						<col style="width: 4%" />
+						<col style="width: 4%; border-right:2px solid;" />
+						<col style="width: 4%" />
+						<col style="width: 4%" />
+						<col style="width: 4%; background:#ccc;" />
+						<col style="width: 4%" />
+						<col style="width: 4%; border-right:2px solid;" />
+						<col style="width: 4%" />
+						<col style="width: 4%" />
+						<col style="width: 4%; background:#ccc;" />
+						<col style="width: 4%" />
+						<col style="width: 4%" />
+					</colgroup>
+					<tr>
+						<td colspan="10">First Half Score</td>
+						<td colspan="10">Second Half Score</td>
+						<td colspan="5">Extras Score</td>
+					</tr>
+					<tr>
+						<td colspan="2"></td>
+						<td>M</td>
+						<td colspan="2"></td>
+						<td colspan="2"></td>
+						<td>M</td>
+						<td colspan="2"></td>
+						<td colspan="2"></td>
+						<td>M</td>
+						<td colspan="2"></td>
+						<td colspan="2"></td>
+						<td>M</td>
+						<td colspan="2"></td>
+						<td colspan="2"></td>
+						<td>M</td>
+						<td colspan="2"></td>
+					</tr>
+					<tr class="clone" data-clones="43">
+						<td>&nbsp;</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<hr />
+	<table style="border:2px solid">
+		<tr>
+			<td>
+				<table class="borderedtbl">
+					<colgroup>
+						<col style="width: 25mm" />
+						<col style="width: 14mm" />
+						<col style="width: 20mm" />
+						<col style="width: 20mm" />
+					</colgroup>
+					<tr style="text-align:center">
+						<td></td>
+						<td>Lic No.</td>
+						<td>Name</td>
+						<td>Signature</td>
+					</tr>
+					<tr>
+						<td>Referee</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Umpire 1</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Umpire 2</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Scorer</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Timekeeper</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="2">Captain in case of protest</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</td>
+			<td style="padding:1mm; border: 1px solid"> Scores Per Period: <table style="text-align:right;">
+					<colgroup>
+						<col style="width: 25mm" />
+						<col style="width: 13mm" />
+						<col style="width: 5mm; text-align:center" />
+						<col style="width: 13mm" />
+						<col style="width: 10mm" />
+						<col style="width: 13mm" />
+						<col style="width: 5mm; text-align:center" />
+						<col style="width: 13mm" />
+					</colgroup>
+					<tr>
+						<td>(1) A</td>
+						<td class="border-form"></td>
+						<td>B</td>
+						<td class="border-form"></td>
+						<td>(2) A</td>
+						<td class="border-form"></td>
+						<td>B</td>
+						<td class="border-form"></td>
+					</tr>
+					<tr>
+						<td>(3) A</td>
+						<td class="border-form"></td>
+						<td>B</td>
+						<td class="border-form"></td>
+						<td>(4) A</td>
+						<td class="border-form"></td>
+						<td>B</td>
+						<td class="border-form"></td>
+					</tr>
+					<tr>
+						<td>Extra(s) A</td>
+						<td class="border-form"></td>
+						<td>B</td>
+						<td class="border-form"></td>
+					</tr>
+					<tr style="border-bottom:1px solid">
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>Final Score A</td>
+						<td class="border-form"></td>
+						<td>B</td>
+						<td class="border-form"></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td style="width:35mm"> Name of Winning Team:</td>
+						<td class="border-form" style="width:50mm"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>
+<script>
+	function duplicateNode() {
+		var node = document.getElementsByClassName("clone");
+		for (var i = 0; i < node.length; i++) {
+			var x = node[i].cloneNode(true);
+			x.classList.remove("clone");
+			var dupenumber = x.getAttribute('data-clones') * 1;
+			dupenumber = dupenumber == 0 ? 1 : dupenumber;
+			for (var j = 0; j < dupenumber; j++) {
+				var y = x.cloneNode(true);
+				node[i].parentNode.insertBefore(y, node[i].nextSibling);
+			}
+		}
+	}
+	duplicateNode();
+</script>
+{% endcapture %}
