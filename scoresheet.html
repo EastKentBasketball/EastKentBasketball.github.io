@@ -19,7 +19,7 @@ breadcrumbs: "1"
       /* or do something else, e.g. close the popup or alert a warning */
     } else {
       var divText = document.getElementById("scoresheet").outerHTML;
-      popup = window.open('', '', 'width=200,height=100');
+      popup = window.open('', '');
       var doc = popup.document;
       doc.open();
       doc.write(divText);
