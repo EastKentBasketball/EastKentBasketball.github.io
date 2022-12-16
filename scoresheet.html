@@ -9,8 +9,29 @@ path: "Scoresheet"
 breadcrumbs: "1"
 ---
 
-<span style="padding:var(--padding)" class="green" onclick="printDivByID('scoresheet')">Print</span>
+<span style="padding:var(--padding)" class="green" onclick="openWin()">Print</span>
+<script>
+  var popup;
+
+  function openWin() {
+    if (popup && !popup.closed) {
+      popup.focus();
+      /* or do something else, e.g. close the popup or alert a warning */
+    } else {
+      var divText = document.getElementById("scoresheet").outerHTML;
+      popup = window.open('', '', 'width=200,height=100');
+      var doc = popup.document;
+      doc.open();
+      doc.write(divText);
+      doc.close();
+    }
+  }
+
+</script>
+<div class="a4sheet" id="scoresheet">
 <style>
+	body{margin:0;padding:0;}
+	.a4sheet table{width:100%; border-collapse:collapse;}
 	.a4sheet * {
 		padding: 0;
 		margin: 0;
@@ -25,6 +46,7 @@ breadcrumbs: "1"
 		/* change the margins as you want them to be. */
 		/*border: 1px solid;*/
 		text-align: left !important;
+		background:white;
 	}
 
 	.border-form {
@@ -43,7 +65,6 @@ breadcrumbs: "1"
 		border: 1px solid
 	}
 </style>
-<div class="a4sheet" id="scoresheet">
 	<table>
 		<tr>
 			<td>Competition</td>
@@ -389,7 +410,6 @@ breadcrumbs: "1"
 			</td>
 		</tr>
 	</table>
-</div>
 <script>
 	function duplicateNode() {
 		var node = document.getElementsByClassName("clone");
@@ -406,3 +426,4 @@ breadcrumbs: "1"
 	}
 	duplicateNode();
 </script>
+</div>
