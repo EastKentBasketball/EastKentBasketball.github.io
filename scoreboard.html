@@ -35,9 +35,8 @@ breadcrumbs: "1"
 		<span id="spnTimeoutTimer"></span>
 	</div>
 	<hr style="background:#000;height: 1px;">
-	<div>Period <span id="spnCurrentPeriod">0</span></div>
-	<hr style="background:#000;height: 1px;">
-	<div id="time">TIME</div>
+	<div class="fixed-half">Period <span id="spnCurrentPeriod">0</span></div>
+	<div id="time" class="fixed-half">TIME</div>
 </div>
 <div id="inputs">
 	<hr style="background:#000" />
@@ -51,7 +50,8 @@ breadcrumbs: "1"
 		<hr style="background:#000;height: 1px;">
 		<div class="fixed-half padding-right"><button onclick="changeDirection('left')">Arrow Left</button></div>
 		<div class="fixed-half padding-left"><button onclick="changeDirection('right')">Arrow Right</button></div>
-		<button onclick="buildSetup()">Setup</button>
+		<div class="fixed-half padding-right"><button onclick="buildSetup()">Setup</button></div>
+		<div class="fixed-half padding-left"><button onclick="buildStats()">Stats</button></div>		
 	</section>
 </div>
 <style>
@@ -66,7 +66,7 @@ breadcrumbs: "1"
 	var ScoreSheet = {};
 	
 	const minToMS = 1000 * 60;
-	var periodTimes = [10,10,1,10,5,10,1,10]
+	var periodTimes = [10,10,1,10,5,10,1,10,1,5,1,5]
 	var elapsed = 0;
 	var paused = 1;
 	var startTime = 0;
@@ -80,6 +80,10 @@ breadcrumbs: "1"
 	stopClockOptions();
 	buildPointButtons();
 	initScoreSheet();
+	
+	function buildStats(){
+		
+	}
 	
 	function resetAll(){
 		var accept = window.confirm("Are you sure you want to wipe and reset all scoreboard and data?")
@@ -225,11 +229,16 @@ breadcrumbs: "1"
 		console.log(ScoreSheet);
 	}
 	
+	function setPeriods(val){
+		periodTimes = val.split(",");
+	}
+	
 	function buildSetup(){
 		var inner = "<div>Setup</div>";
 		var now = new Date();
 		var date = now.toISOString().substring(0, 10);
 		var time = now.toISOString().split("T")[1].slice(0, -8);
+		inner += "<div><label class='fixed-half'>Periods Minutes (Setup,1,Break,2,Break,3 etc.)</label><input class='fixed-half' type='text' oninput='setPeriods(this.value)' value='" + periodTimes.toString() + "' /></div><hr />";
 		inner += "<div class='half'><label class='fixed-half'>Home Name</label><input class='fixed-half' type='text' oninput='teamSetupVals(\"Home\",\"Name\",this.value)' value='" + ScoreSheet.teams.Home.Name + "' /></div>";
 		inner += "<div class='half'><label class='fixed-half'>Home Colour</label><input class='fixed-half' type='text' oninput='teamSetupVals(\"Home\",\"Colour\",this.value)' value='" + ScoreSheet.teams.Home.Colour + "'  /></div>";
 		inner += "<div class='half'><label class='fixed-half'>Away Name</label><input class='fixed-half' type='text' oninput='teamSetupVals(\"Away\",\"Name\",this.value)' value='" + ScoreSheet.teams.Away.Name + "'  /></div>";
@@ -237,8 +246,8 @@ breadcrumbs: "1"
 		inner += "<div class='half'><label class='fixed-half'>Location</label><input class='fixed-half' type='text' oninput='gameSetupVals(\"Location\",this.value)' value='" + ScoreSheet.game.Location + "' /></div>";
 		inner += "<div class='half'><label class='fixed-half'>League</label><input class='fixed-half' type='text' oninput='gameSetupVals(\"League\",this.value)' value='" + ScoreSheet.game.League + "' /></div>";
 		inner += "<div class='half'><label class='fixed-half'>Match Number</label><input class='fixed-half' type='text' oninput='gameSetupVals(\"MatchNo\",this.value)' value='" + ScoreSheet.game.MatchNo + "' /></div>";
-		inner += "<div class='half'><label class='fixed-half'>Date</label><input class='fixed-half' type='date' oninput='gameSetupVals(\"Date\",this.value)' value='' /></div>";//" + (ScoreSheet.game.Date == "" ? date : ScoreSheet.game.Date) + "
-		inner += "<div class='half'><label class='fixed-half'>Time</label><input class='fixed-half' type='time' oninput='gameSetupVals(\"Time\",this.value)' value='' /></div>";//" + (ScoreSheet.game.Time == "" ? time : ScoreSheet.game.Time)  + "
+		inner += "<div class='half'><label class='fixed-half'>Date</label><input class='fixed-half' type='date' oninput='gameSetupVals(\"Date\",this.value)' value='" + ScoreSheet.game.Date + "' /></div>";//" + (ScoreSheet.game.Date == "" ? date : ScoreSheet.game.Date) + "
+		inner += "<div class='half'><label class='fixed-half'>Time</label><input class='fixed-half' type='time' oninput='gameSetupVals(\"Time\",this.value)' value='" + ScoreSheet.game.Time + "' /></div>";//" + (ScoreSheet.game.Time == "" ? time : ScoreSheet.game.Time)  + "
 		inner += "<div class='half padding-left padding-right'><button onclick=''>Manage Officials</button></div><hr style='height: 1px;margin: 0;'>";
 		inner += "<div class='fixed-half padding-right'><button onclick='buildPlayerCreate(\"Home\")'>Manage Home Team</button></div>";
 		inner += "<div class='fixed-half padding-left'><button onclick='buildPlayerCreate(\"Away\")'>Manage Away Team</button></div>";
@@ -396,12 +405,12 @@ breadcrumbs: "1"
 	
 	function buildPointButtons(){
 		var teams = ["Home","Away"];
-		var points = [3,2,1,-1,-2,-3];
+		var points = [3,-3,2,-2,1,-1];
 		var inner = "";
 		for(var i=0;i<teams.length;i++){
-			inner += "<div class='fixed-half padding'><div>" + teams[i] + " Points";
+			inner += "<div class='fixed-half'><div><div>" + teams[i] + " Points</div>";
 			for(var j=0;j<points.length;j++){
-				inner += "<button onclick='pointSelected(\"" + teams[i] + "\"," + points[j] + ")'>" + points[j] + "</button>";
+				inner += "<div class='padding-right padding-left fixed-half'><button onclick='pointSelected(\"" + teams[i] + "\"," + points[j] + ")'>" + points[j] + "</button></div>";
 			}
 			inner += "</div></div>"
 		}
@@ -475,7 +484,7 @@ breadcrumbs: "1"
 		var foul = ["Personal","Technical","Unsportsman"];
 		var inner = "<button onclick='buzzer()'>Buzzer</button><hr style='background:#000;height:1px'>";
 		for(var i=0;i<teams.length;i++){
-			inner += "<div class='fixed-half padding'><div>" + teams[i] + " Foul";
+			inner += "<div class='fixed-half padding-right padding-left'><div>" + teams[i] + " Foul";
 			for(var j=0;j<foul.length;j++){
 				inner += "<button onclick='foulSelected(\"" + teams[i] + "\",\"" + foul[j] + "\")'>" + foul[j] + "</button>";
 			}
