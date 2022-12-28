@@ -50,9 +50,9 @@ breadcrumbs: "1"
 		<hr style="background:#000;height: 1px;">
 		<div class="fixed-half padding-right"><button onclick="changeDirection('left')">Arrow Left</button></div>
 		<div class="fixed-half padding-left"><button onclick="changeDirection('right')">Arrow Right</button></div>
-		<div class="fixed-half padding-right"><button onclick="buildSetup()">Setup</button></div>
-		<div class="fixed-half padding-left"><button onclick="buildStats()">Stats</button></div>		
+		<button onclick="buildSetup()">Setup</button>
 	</section>
+	<div id="divStats"></div>
 </div>
 <style>
 	#inputs section {
@@ -82,7 +82,27 @@ breadcrumbs: "1"
 	initScoreSheet();
 	
 	function buildStats(){
+		var lstTeams = ScoreSheet.teams;
+		var gameDetails = ScoreSheet.game;
+		var inner = "League: " + gameDetails.League + ", Match: " + gameDetails.MatchNo + "<br/>Local: " + gameDetails.Location + ", Date: " + (gameDetails.Date == "" ? gameDetails.Date.toISOString().split('T')[0] : "") + "<hr style='background:#000;'>";
 		
+		for ( var property in lstTeams ) {
+		//for(var k=0;k<lstTeams.length;k++){
+			var teamK = lstTeams[property];
+			inner += "Team Name: " + teamK.Name + ", Colour: " + teamK.Colour + "<hr style='background:#000; height: 1px'>";
+			var totScore = 0;
+			var totFouls = 0;
+			for(var j=0;j<teamK.Players.length;j++){
+				var playerJ = teamK.Players[j];
+				var score = playerJ.Points.reduce((accum, item) => accum + item.Number, 0);
+				var fouls = playerJ.Fouls.length;
+				totScore += score;
+				totFouls += fouls;
+				inner += (playerJ.KitNumber == -1 ? "Misc Player" : ("Name: " + playerJ.Name + ", Licence: " + playerJ.LicenceNo + ", Kit: " + playerJ.KitNumber)) + ", Score: " + score + ", Fouls: " + fouls + "<hr style='background:#000; height: 1px'>";
+			}
+			inner += "Totals - Score: " + totScore + " Fouls: " + totFouls + "<hr style='background:#000;'>";
+		}
+		document.getElementById("divStats").innerHTML = inner;
 	}
 	
 	function resetAll(){
@@ -227,6 +247,7 @@ breadcrumbs: "1"
 		getElem('spnAwayFoul').innerHTML = awayFouls;
 		getElem('spnCurrentPeriod').innerHTML = !Number.isInteger(Number(ScoreSheet.game.Clock.Period)) ? "Break " + ScoreSheet.game.Clock.Period : ScoreSheet.game.Clock.Period;
 		console.log(ScoreSheet);
+		buildStats();
 	}
 	
 	function setPeriods(val){
