@@ -43,15 +43,13 @@ breadcrumbs: "1"
 	<div id="dynamicButtons"></div>
 	<hr style="background:#000;">
 	<section id="clockStopChoices"></section>
-	<section id="inGameChoices" style="display:block">
-		<div class="fixed-half padding-right"><button onclick="StartJob()">Start Clock</button></div>
-		<div class="fixed-half padding-left"><button onclick="StopJob()">Stop Clock</button></div>
-		<button onclick="advancePeriod()">Advance To Next Period</button>
-		<hr style="background:#000;height: 1px;">
-		<div class="fixed-half padding-right"><button onclick="changeDirection('left')">Arrow Left</button></div>
-		<div class="fixed-half padding-left"><button onclick="changeDirection('right')">Arrow Right</button></div>
-		<button onclick="buildSetup()">Setup</button>
-	</section>
+	<div class="fixed-half padding-right"><button onclick="StartJob()">Start Clock</button></div>
+	<div class="fixed-half padding-left"><button onclick="StopJob()">Stop Clock</button></div>
+	<button onclick="advancePeriod()">Advance To Next Period</button>
+	<hr style="background:#000;height: 1px;">
+	<div class="fixed-half padding-right"><button onclick="changeDirection('left')">Arrow Left</button></div>
+	<div class="fixed-half padding-left"><button onclick="changeDirection('right')">Arrow Right</button></div>
+	<button onclick="buildSetup()">Setup</button>
 	<div id="divStats"></div>
 </div>
 <style>
@@ -84,12 +82,12 @@ breadcrumbs: "1"
 	function buildStats(){
 		var lstTeams = ScoreSheet.teams;
 		var gameDetails = ScoreSheet.game;
-		var inner = "League: " + gameDetails.League + ", Match: " + gameDetails.MatchNo + "<br/>Local: " + gameDetails.Location + ", Date: " + (gameDetails.Date == "" ? gameDetails.Date.toISOString().split('T')[0] : "") + "<hr style='background:#000;'>";
+		var inner = "League: " + gameDetails.League + ", Match: " + gameDetails.MatchNo + "<br/>Local: " + gameDetails.Location + ", Date: " + (gameDetails.Date != "" ? new Date(gameDetails.Date).toISOString().split('T')[0] : "") + "<hr style='background:#000;'>";
 		
 		for ( var property in lstTeams ) {
 		//for(var k=0;k<lstTeams.length;k++){
 			var teamK = lstTeams[property];
-			inner += "Team Name: " + teamK.Name + ", Colour: " + teamK.Colour + "<hr style='background:#000; height: 1px'>";
+			inner += "Team Name: " + teamK.Name + ", Colour: " + teamK.Colour + "<hr style='background:#000; height: 3px'>";
 			var totScore = 0;
 			var totFouls = 0;
 			for(var j=0;j<teamK.Players.length;j++){
@@ -108,8 +106,17 @@ breadcrumbs: "1"
 	function resetAll(){
 		var accept = window.confirm("Are you sure you want to wipe and reset all scoreboard and data?")
 		if(accept){
+			document.getElementById("inputs").style.display = "block";
 			resetScoreBoard(true)
 			initScoreSheet();
+		}
+	}
+	
+	function endGame(){
+		var accept = window.confirm("Are you sure you want to end game?")
+		if(accept){
+			document.getElementById("inputs").style.display = "none";
+			document.getElementById("time").innerHTML = "-";
 		}
 	}
 	
@@ -117,6 +124,7 @@ breadcrumbs: "1"
 		ScoreSheet.game[type] = val;
 		//console.log(ScoreSheet);
 		setLocal("scoreboard", JSON.stringify(ScoreSheet));
+		buildStats();
 	}
 	
 	function teamSetupVals(team,type, val){
@@ -273,6 +281,7 @@ breadcrumbs: "1"
 		inner += "<div class='fixed-half padding-right'><button onclick='buildPlayerCreate(\"Home\")'>Manage Home Team</button></div>";
 		inner += "<div class='fixed-half padding-left'><button onclick='buildPlayerCreate(\"Away\")'>Manage Away Team</button></div>";
 		inner += "<button class='red' onclick='resetAll()'>Reset Score Board</button>";
+		//inner += "<button class='red' onclick='endGame()'>End Game</button>";
 		inner += "<button class='red' onclick='buildPointButtons()'>Close</button><hr/>";
 		document.getElementById('dynamicButtons').innerHTML = inner;
 	}
