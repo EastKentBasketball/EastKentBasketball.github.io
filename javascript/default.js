@@ -142,6 +142,8 @@ function convertJson(){
 		arr[i].complete = false;
         projectOptions += "<option value='" + url + "'>" + StringReplaceAll(url, "_", " ") + "</option>";
 	}
+	//console.log(arr);
+	arr.push({"Name": "Result Submissions","URL": "https://forms.gle/zTyryYwvfniavPQ48","SplitURL": ["--EXTERNAL--"],"UrlDepth": 1,"complete": false});
 	//var ul = document.createElement("UL");
 	customNavCreate("",arr.slice(1,arr.length));
 	//ul.innerHTML = links;
@@ -161,7 +163,7 @@ function customNavCreate(str, navList, str2){
 					arr[j].complete = true;
 					navList[i].complete = true;
 					var subList = checkSubs(navList[i], arr);
-					var tempStr = "<li><a href='" + navList[i].URL + "'>" + navList[i].Name + "</a>";
+					var tempStr = "<li><a " + (navList[i].URL.toLowerCase().startsWith("http") ? "target='_blank'" : "") + " href='" + navList[i].URL + "'>" + navList[i].Name + "</a>";
 					if(subList.length > 0){
 						links += tempStr + "<ul>";
 						navItems += tempStr + "<span onclick='toggleNavSubMenu(this);'>" + wrapPath(iconDownArrow) + "</span>" + "<ul style='display:none;'>";						
