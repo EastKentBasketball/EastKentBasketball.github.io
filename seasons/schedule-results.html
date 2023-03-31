@@ -4,8 +4,8 @@
 
 layout: SiteMaster
 nav: "1"
-title: "Current Schedule-Results"
-path: "Seasons/Current_Schedule-Results"
+title: "Schedule And Results"
+path: "Seasons/Schedule-And-Results"
 breadcrumbs: "1"
 ---
 
@@ -122,6 +122,8 @@ console.log(overview);
 }
 //console.log(ResultsTable("2021/2022","mensLeague"))
 </script>
+<label class="fixed-quarter">Choose Season</label>
+<select id="slcSeason" class="fixed-three-quarter" value="" onchange="ResultsTable(this.value, currentLeague)"><option value="2022/2023" selected>2022/2023</option><option value="2021/2022">2021/2022</option></select><hr>
 <label class="fixed-quarter">Show Result History</label>
 <select id="slcShowTable" class="fixed-three-quarter" value="" onchange="ResultsTable(currentSeason,this.value)"><option value="womensLeague">Womens League</option><option value="mensLeague" selected>Mens League</option><option value="womensCup">Womens Cup</option></select>
 <hr><label class="fixed-quarter">Filter Team</label>
