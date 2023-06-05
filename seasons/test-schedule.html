@@ -1,0 +1,54 @@
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: SiteMaster
+nav: "1"
+title: "Schedule And Results"
+path: "Seasons/Test-Schedule"
+breadcrumbs: "1"
+---
+<table id=tbl class="break-table"></table>
+<script>
+async function getLeagueTable(){
+	var tableFinal = null
+	var x = JSON.parse(getLocal("LeagueTable"));
+	if(x != null){
+		if(new Date(UTCString()).getTime() - new Date(x.dateTime).getTime() > 1000*60*60){delLocal("LeagueTable"); x = null;}
+	}
+	if(x ==  null){
+		var dl = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS2lKSaFjfsuZK7Lseo_HsGYhq1VpQQ_qRqntI2NQqc8qlCRAY919Zje_IaCbsorgAgtA-8noCqHyWL/pub?gid=197807890&single=true&output=csv')
+		var txt = await dl.text();
+		var a = csvToObject(txt);
+		tableFinal = a;
+		setLocal("LeagueTable", JSON.stringify({"dateTime":UTCString(),"storedValue":a}));			
+	} else{
+		tableFinal = x.storedValue;
+	}
+	if (tableFinal != null) {
+		createTable(objectToTwodArray(tableFinal),"tbl");
+	}
+}
+
+function csvToObject(dataString) {
+  var lines = dataString
+    .split(/\n/)
+    .map(function(lineStr) {
+        return lineStr.split(",");
+    });
+  
+  var keys = lines[0];
+
+  var objects = lines
+    .slice(1)
+    .map(function(arr) {
+      return arr.reduce(function(obj, val, i) {
+        obj[keys[i].trim()] = val; 
+        return obj;
+      }, {});
+    });
+  
+  return objects;//JSON.stringify(objects, null, 2);
+}
+getLeagueTable();
+</script>
