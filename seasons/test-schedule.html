@@ -8,8 +8,14 @@ title: "Schedule And Results"
 path: "Seasons/Test-Schedule"
 breadcrumbs: "1"
 ---
+<button onclick="forceLeagueRefresh()">Refresh Table</button>
 <table id=tbl class="break-table"></table>
 <script>
+
+function forceLeagueRefresh(){
+	delLocal("LeagueTable");
+	getLeagueTable();
+}
 async function getLeagueTable(){
 	var tableFinal = null
 	var x = JSON.parse(getLocal("LeagueTable"));
