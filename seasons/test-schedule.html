@@ -18,49 +18,24 @@ function forceLeagueRefresh(){
 }
 async function getLeagueTable(){
 	var _resultsTable = null;
+	var _joinTable = null;
 	var _leagueTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vS2lKSaFjfsuZK7Lseo_HsGYhq1VpQQ_qRqntI2NQqc8qlCRAY919Zje_IaCbsorgAgtA-8noCqHyWL/pub?gid=197807890&single=true&output=csv", "CSV", "LeagueTable", (60*60));
 	if (_leagueTable != null) {_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "CSV", "ResultsTable", (60*60));}
-	createTable(objectToTwodArray(_leagueTable),"tbl");
-	// var tableFinal = null
-	// var x = JSON.parse(getLocal("LeagueTable"));
-	// if(x != null){
-		// if(new Date(UTCString()).getTime() - new Date(x.dateTime).getTime() > 1000*60*60){delLocal("LeagueTable"); x = null;}
-	// }
-	// if(x ==  null){
-		// var dl = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS2lKSaFjfsuZK7Lseo_HsGYhq1VpQQ_qRqntI2NQqc8qlCRAY919Zje_IaCbsorgAgtA-8noCqHyWL/pub?gid=197807890&single=true&output=csv')
-		// var txt = await dl.text();
-		// var a = csvToObject(txt);
-		// tableFinal = a;
-		// setLocal("LeagueTable", JSON.stringify({"dateTime":UTCString(),"storedValue":a}));			
-	// } else{
-		// tableFinal = x.storedValue;
-	// }
-	// if (tableFinal != null) {
-		// var resultsFinal = null;
-		// var y = JSON.parse(getLocal("ResultsTable"));
-		// if(y != null){
-			// if(new Date(UTCString()).getTime() - new Date(y.dateTime).getTime() > 1000*60*60){delLocal("ResultsTable"); y = null;}
-		// }
-		// if(y ==  null){
-			// var dl = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv')
-			// var txt = await dl.text();
-			// var a = csvToObject(txt);
-			// resultsFinal = a;
-			// setLocal("ResultsTable", JSON.stringify({"dateTime":UTCString(),"storedValue":a}));			
-		// } else{
-			// resultsFinal = y.storedValue;
-		// }
-		// createTable(objectToTwodArray(tableFinal),"tbl");
-	// }
+	if (_resultsTable != null){
+		_joinTable = _leagueTable.map(a => ({..._resultsTable.find(p => (a.Season === p["League Year"]) && a.League === p["League Type"] && a["Match Number"] === p["Match Number"]), ...a}));
+		createTable(objectToTwodArray(_joinTable),"tbl");
+	} else{
+		createTable(objectToTwodArray(_leagueTable),"tbl");
+	}
 }
 async function fetchData(URL, dataType, storeDataName, expirySecs){
 	storeDataName = storeDataName || "";
-	expirySecs = storeDataName || (60*60*24*7);
+	expirySecs = expirySecs || (60*60*24*7);
 	var data = null;
 	if (storeDataName != ""){
 		data = JSON.parse(getLocal(storeDataName));
 		if(data != null){
-			if(new Date(UTCString()).getTime() - new Date(data.dateTime).getTime() > 1000*expirySecs){delLocal(storeDataName); data = null;}
+			if(new Date(UTCString(true)).getTime() - new Date(data.dateTime).getTime() > 1000*expirySecs){delLocal(storeDataName); data = null;}
 		}
 	}
 	if(data ==  null){
@@ -78,7 +53,7 @@ async function fetchData(URL, dataType, storeDataName, expirySecs){
 				processedData = await dl.text();
 		}
 		if (storeDataName != ""){
-			setLocal(storeDataName, JSON.stringify({"dateTime":UTCString(),"storedValue":processedData}));	
+			setLocal(storeDataName, JSON.stringify({"dateTime":UTCString(true),"storedValue":processedData}));	
 		}
 		return processedData;
 	} else{
