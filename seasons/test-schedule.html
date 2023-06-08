@@ -11,28 +11,79 @@ breadcrumbs: "1"
 <button onclick="forceLeagueRefresh()">Refresh Table</button>
 <table id=tbl class="break-table"></table>
 <script>
-
+const _maxDaysForSubmission = 3;
 function forceLeagueRefresh(){
 	delLocal("LeagueTable");
 	getLeagueTable();
 }
 async function getLeagueTable(){
-	var tableFinal = null
-	var x = JSON.parse(getLocal("LeagueTable"));
-	if(x != null){
-		if(new Date(UTCString()).getTime() - new Date(x.dateTime).getTime() > 1000*60*60){delLocal("LeagueTable"); x = null;}
+	var _resultsTable = null;
+	var _leagueTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vS2lKSaFjfsuZK7Lseo_HsGYhq1VpQQ_qRqntI2NQqc8qlCRAY919Zje_IaCbsorgAgtA-8noCqHyWL/pub?gid=197807890&single=true&output=csv", "CSV", "LeagueTable", (60*60));
+	if (_leagueTable != null) {_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "CSV", "ResultsTable", (60*60));}
+	createTable(objectToTwodArray(_leagueTable),"tbl");
+	// var tableFinal = null
+	// var x = JSON.parse(getLocal("LeagueTable"));
+	// if(x != null){
+		// if(new Date(UTCString()).getTime() - new Date(x.dateTime).getTime() > 1000*60*60){delLocal("LeagueTable"); x = null;}
+	// }
+	// if(x ==  null){
+		// var dl = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS2lKSaFjfsuZK7Lseo_HsGYhq1VpQQ_qRqntI2NQqc8qlCRAY919Zje_IaCbsorgAgtA-8noCqHyWL/pub?gid=197807890&single=true&output=csv')
+		// var txt = await dl.text();
+		// var a = csvToObject(txt);
+		// tableFinal = a;
+		// setLocal("LeagueTable", JSON.stringify({"dateTime":UTCString(),"storedValue":a}));			
+	// } else{
+		// tableFinal = x.storedValue;
+	// }
+	// if (tableFinal != null) {
+		// var resultsFinal = null;
+		// var y = JSON.parse(getLocal("ResultsTable"));
+		// if(y != null){
+			// if(new Date(UTCString()).getTime() - new Date(y.dateTime).getTime() > 1000*60*60){delLocal("ResultsTable"); y = null;}
+		// }
+		// if(y ==  null){
+			// var dl = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv')
+			// var txt = await dl.text();
+			// var a = csvToObject(txt);
+			// resultsFinal = a;
+			// setLocal("ResultsTable", JSON.stringify({"dateTime":UTCString(),"storedValue":a}));			
+		// } else{
+			// resultsFinal = y.storedValue;
+		// }
+		// createTable(objectToTwodArray(tableFinal),"tbl");
+	// }
+}
+async function fetchData(URL, dataType, storeDataName, expirySecs){
+	storeDataName = storeDataName || "";
+	expirySecs = storeDataName || (60*60*24*7);
+	var data = null;
+	if (storeDataName != ""){
+		data = JSON.parse(getLocal(storeDataName));
+		if(data != null){
+			if(new Date(UTCString()).getTime() - new Date(data.dateTime).getTime() > 1000*expirySecs){delLocal(storeDataName); data = null;}
+		}
 	}
-	if(x ==  null){
-		var dl = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vS2lKSaFjfsuZK7Lseo_HsGYhq1VpQQ_qRqntI2NQqc8qlCRAY919Zje_IaCbsorgAgtA-8noCqHyWL/pub?gid=197807890&single=true&output=csv')
-		var txt = await dl.text();
-		var a = csvToObject(txt);
-		tableFinal = a;
-		setLocal("LeagueTable", JSON.stringify({"dateTime":UTCString(),"storedValue":a}));			
+	if(data ==  null){
+		var tempData = null;
+		var dl = await fetch(URL);
+		var response = await dl.response();
+		if(!response.ok){return null;}
+		var processedData = null;
+		switch(dataType) {
+			case "TXT":
+			case "CSV":
+				tempData = response.text();
+				processedData = ((dataType == "CSV") ? csvToObject(tempData) : tempData);
+				break;
+			default:
+				processedData = response.text();
+		}
+		if (storeDataName != ""){
+			setLocal(storeDataName, JSON.stringify({"dateTime":UTCString(),"storedValue":processedData}));	
+		}
+		return processedData;
 	} else{
-		tableFinal = x.storedValue;
-	}
-	if (tableFinal != null) {
-		createTable(objectToTwodArray(tableFinal),"tbl");
+		return data.storedValue;
 	}
 }
 
@@ -57,4 +108,6 @@ function csvToObject(dataString) {
   return objects;//JSON.stringify(objects, null, 2);
 }
 getLeagueTable();
+//
+//let result = appointments.map(a => ({...patients.find(p => a.patientId === p.patientId), ...a}));
 </script>
