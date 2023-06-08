@@ -71,11 +71,11 @@ async function fetchData(URL, dataType, storeDataName, expirySecs){
 		switch(dataType) {
 			case "TXT":
 			case "CSV":
-				tempData = dl.text();
+				tempData = await dl.text();
 				processedData = ((dataType == "CSV") ? csvToObject(tempData) : tempData);
 				break;
 			default:
-				processedData = dl.text();
+				processedData = await dl.text();
 		}
 		if (storeDataName != ""){
 			setLocal(storeDataName, JSON.stringify({"dateTime":UTCString(),"storedValue":processedData}));	
