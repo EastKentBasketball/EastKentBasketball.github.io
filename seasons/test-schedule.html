@@ -10,6 +10,7 @@ breadcrumbs: "1"
 ---
 <button onclick="forceLeagueRefresh()">Refresh Table</button>
 <table id=tbl class="break-table"></table>
+<span id=details></span>
 <script>
 const _maxDaysForSubmission = 3;
 function forceLeagueRefresh(){
@@ -24,7 +25,10 @@ function reduceArayByKeys(arr, keysToKeep){
 	  return acc;
 	}, {}));
 }
-
+function viewMatchDetails(Year,Type,Match){
+	var details = _joinTable.filter(p => p["League Year"] === Year && p["League Type"] === Type && p["Match Number"] === Match);
+	getElem("details").innerHTML = JSON.stringify(details);
+}
 
 var _joinTable = null;
 async function getLeagueTable(){
