@@ -70,6 +70,8 @@ function viewMatchDetails(Year,Type,Match){
 				+ (extraInfo[0]["MVP"] != "" ? ("MVP: " + extraInfo[0]["MVP"] + "<hr/>") : "")
 				+ (extraInfo[0]["Comments/Additional Details"] != "" ? ("Game Synopsis: " + extraInfo[0]["Comments/Additional Details"] + "<hr/>") : "")
 				+ (extraInfo[0]["Match Sheet Photo"] != "" ? ("Score Sheet: <a href='" + extraInfo[0]["Match Sheet Photo"] + "' target='_blank'>Click Here (Admin Access Only)</a>") : "");
+	} else{
+		modalHTML += "<a target='_blank' href='https://docs.google.com/forms/d/e/1FAIpQLSe_zCLLs9ADsMD2oUFQ76WKY2ZMayX_5tVO2M4h4FNhK1RhLA/viewform?usp=pp_url&entry.821820740=" + extraInfo[0]['League Year'] + "&entry.492201271=" + extraInfo[0]['League Type'].replace(' ', '+') + "&entry.1142329140=" + extraInfo[0]['Match Number'] + "'>Submit Result</a>";
 	}
 	message(modalHTML, header);
 }
