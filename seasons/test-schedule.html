@@ -16,24 +16,28 @@ breadcrumbs: "1"
 		color: white;
 		padding: 5px;
 		font-weight: bold;
+	    line-height: 2;
 	}
 	.winner{
 		background: green;
 		color: white;
 		padding: 5px;
 		font-weight: bold;
+	    line-height: 2;
 	}
 	.draw{
 		background: yellow;
 		color: white;
 		padding: 5px;
 		font-weight: bold;
+		line-height: 2;
 	}
 </style>
 <script>
 const _maxDaysForSubmission = 4;
 function forceLeagueRefresh(){
 	delLocal("LeagueTable");
+	delLocal("ResultsTable");
 	getLeagueTable();
 }
 
@@ -59,11 +63,14 @@ function viewMatchDetails(Year,Type,Match){
 				+ "Game Date: " + extraInfo[0]["Date"] + "<br/>"
 				+ "Ref 1: " + extraInfo[0]["Referee 1"] + "<br/>"
 				+ "Ref 2: " + extraInfo[0]["Referee 2"] + "<br/>"
-				+ (extraInfo[0]["Comment"] != "" ? ("Comment: " + extraInfo[0]["Comment"] + "<br/>") : "")
-				+ ((extraInfo[0]["Home Score"] != "" && extraInfo[0]["Away Score"] != "") ? ("Score: Home " + extraInfo[0]["Home Score"] + " - Away " + extraInfo[0]["Away Score"] + "<br/>") : "")
+				+ (extraInfo[0]["Comment"] != "" ? ("Comment: " + extraInfo[0]["Comment"] + "<br/>") : "");
+				
+	if (item["Timestamp"] !== undefined){
+		modalHTML += ((extraInfo[0]["Home Score"] != "" && extraInfo[0]["Away Score"] != "") ? ("Score: Home " + extraInfo[0]["Home Score"] + " - Away " + extraInfo[0]["Away Score"] + "<br/>") : "")
 				+ (extraInfo[0]["MVP"] != "" ? ("MVP: " + extraInfo[0]["MVP"] + "<br/>") : "")
 				+ (extraInfo[0]["Comments/Additional Details"] != "" ? ("Game Synopsis: " + extraInfo[0]["Comments/Additional Details"] + "<br/>") : "")
 				+ (extraInfo[0]["Match Sheet Photo"] != "" ? ("Score Sheet: <a href='" + extraInfo[0]["Match Sheet Photo"] + "' target='_blank'>Click Here (Admin Access Only)</a>") : "");
+	}
 	message(modalHTML, header);
 }
 
