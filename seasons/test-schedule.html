@@ -10,9 +10,28 @@ breadcrumbs: "1"
 ---
 <button onclick="forceLeagueRefresh()">Refresh Table</button>
 <table id=tbl class="break-table"></table>
-<span id=details></span>
+<style>
+	.late{
+		background: red;
+		color: white;
+		padding: 5px;
+		font-weight: bold;
+	}
+	.winner{
+		background: red;
+		color: white;
+		padding: 5px;
+		font-weight: bold;
+	}
+	.draw{
+		background: yellow;
+		color: white;
+		padding: 5px;
+		font-weight: bold;
+	}
+</style>
 <script>
-const _maxDaysForSubmission = 3;
+const _maxDaysForSubmission = 4;
 function forceLeagueRefresh(){
 	delLocal("LeagueTable");
 	getLeagueTable();
@@ -25,9 +44,27 @@ function reduceArayByKeys(arr, keysToKeep){
 	  return acc;
 	}, {}));
 }
+
+function timestampToDateObj(str){
+	var datearr = str.split(" ")[0].split("/");
+	var timearr = str.split(" ")[1].split(":");
+	return new Date(datearr[2],datearr[1]-1,datearr[0],timearr[0],timearr[1],timearr[2]);
+}
+
 function viewMatchDetails(Year,Type,Match){
 	var details = _joinTable.filter(p => p["League Year"] === Year && p["League Type"] === Type && p["Match Number"] === Match);
-	getElem("details").innerHTML = JSON.stringify(details);
+	var extraInfo = reduceArayByKeys(_joinTable, ['Date', 'Home Team', "Away Team", "League Year", "League Type", "Match Number", "Comment", "Referee 1", "Referee 2", "Home Score", "Away Score", "MVP", "Comments/Additional Details"]);
+	var header = extraInfo[0]["League Year"] + " - " + extraInfo[0]["League Type"] + " - Match: " + extraInfo[0]["Match Number"];
+	var modalHTML = extraInfo[0]["Home Team"] + " v " + extraInfo[0]["Away Team"] + "<br/>"
+				+ "Game Date: " + extraInfo[0]["Date"] + "<br/>"
+				+ "Ref 1: " + extraInfo[0]["Referee 1"] + "<br/>"
+				+ "Ref 2: " + extraInfo[0]["Referee 2"] + "<br/>"
+				+ (extraInfo[0]["Comment"] != "" ? ("Comment: " + extraInfo[0]["Comment"] + "<br/>") : "")
+				+ ((extraInfo[0]["Home Score"] != "" && extraInfo[0]["Away Score"] != "") ? ("Score: Home " + extraInfo[0]["Home Score"] + " - Away " + extraInfo[0]["Away Score"] + "<br/>") : "")
+				+ (extraInfo[0]["MVP"] != "" ? ("MVP: " + extraInfo[0]["MVP"] + "<br/>") : "")
+				+ (extraInfo[0]["Comments/Additional Details"] != "" ? ("Game Synopsis: " + extraInfo[0]["Comments/Additional Details"] + "<br/>") : "")
+				+ (extraInfo[0]["Match Sheet Photo"] != "" ? ("Score Sheet: <a href='" + extraInfo[0]["Match Sheet Photo"] + "' target='_blank'>Click Here (Admin Access Only)</a>") : "");
+	message(modalHTML, header);
 }
 
 var _joinTable = null;
@@ -36,7 +73,27 @@ async function getLeagueTable(){
 	var _leagueTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vS2lKSaFjfsuZK7Lseo_HsGYhq1VpQQ_qRqntI2NQqc8qlCRAY919Zje_IaCbsorgAgtA-8noCqHyWL/pub?gid=197807890&single=true&output=csv", "CSV", "LeagueTable", (60*60));
 	if (_leagueTable != null) {_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "CSV", "ResultsTable", (60*60));}
 	if (_resultsTable != null){
-		_joinTable = _leagueTable.map(a => ({..._resultsTable.find(p => (a["League Year"] === p["League Year"]) && a["League Type"] === p["League Type"] && a["Match Number"] === p["Match Number"]), ...a, "More Details" : "<span onclick=\"viewMatchDetails('" + a["League Year"] + "','" + a["League Type"] + "'," + a["Match Number"] + ")\">Click Here</span>"}));
+		_joinTable = _leagueTable.map(a => ({..._resultsTable.find(p => (a["League Year"] === p["League Year"]) && a["League Type"] === p["League Type"] && a["Match Number"] === p["Match Number"]), ...a, "More Details" : "<span onclick=\"viewMatchDetails('" + a["League Year"] + "','" + a["League Type"] + "','" + a["Match Number"] + "')\">Click Here</span>"}));
+		_joinTable.forEach(function(item, index) {
+			var MatchDate = timestampToDateObj(item.Date + " 00:00:01").getTime();
+			var dateNow = new Date(UTCString(true)).getTime();
+			if (item["Timestamp"] !== undefined){
+				var SubmitTime = timestampToDateObj(item["Timestamp"]).getTime();
+				if ((MatchDate + _maxDaysForSubmission) < SubmitTime){
+					item.Date = "<span class='late'>" + item.Date + "</span>";
+				}
+				if (item["Home Score"] > item["Away Score"]){
+					item["Home Team"] = "<span class='winner'>" + item["Home Team"] + "</span>";
+				} else if(item["Home Score"] < item["Away Score"]){
+					item["Away Team"] = "<span class='winner'>" + item["Away Team"] + "</span>";				
+				} else {
+					item["Home Team"] = "<span class='draw'>" + item["Home Team"] + "</span>";
+					item["Away Team"] = "<span class='draw'>" + item["Away Team"] + "</span>";
+				}
+			} else if ((MatchDate + _maxDaysForSubmission) < dateNow){
+				item.Date = "<span class='late'>" + item.Date + "</span>";
+			}
+		});
 		var tableBuild = reduceArayByKeys(_joinTable, ['Date', 'Home Team', "Away Team", "League Year", "League Type", "Match Number", "More Details"]);
 		createTable(objectToTwodArray(tableBuild),"tbl");
 	} else{
