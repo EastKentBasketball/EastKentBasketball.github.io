@@ -162,7 +162,10 @@ function csvToObject(dataString) {
   
   return objects;//JSON.stringify(objects, null, 2);
 }
-getLeagueTable();
+
+docReady(function () {
+	getLeagueTable();
+});
 //
 //let result = appointments.map(a => ({...patients.find(p => a.patientId === p.patientId), ...a}));
 </script>
