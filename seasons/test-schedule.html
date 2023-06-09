@@ -53,7 +53,7 @@ function timestampToDateObj(str){
 
 function viewMatchDetails(Year,Type,Match){
 	var details = _joinTable.filter(p => p["League Year"] === Year && p["League Type"] === Type && p["Match Number"] === Match);
-	var extraInfo = reduceArayByKeys(_joinTable, ['Date', 'Home Team', "Away Team", "League Year", "League Type", "Match Number", "Comment", "Referee 1", "Referee 2", "Home Score", "Away Score", "MVP", "Comments/Additional Details"]);
+	var extraInfo = reduceArayByKeys(details, ['Date', 'Home Team', "Away Team", "League Year", "League Type", "Match Number", "Comment", "Referee 1", "Referee 2", "Home Score", "Away Score", "MVP", "Comments/Additional Details"]);
 	var header = extraInfo[0]["League Year"] + " - " + extraInfo[0]["League Type"] + " - Match: " + extraInfo[0]["Match Number"];
 	var modalHTML = extraInfo[0]["Home Team"] + " v " + extraInfo[0]["Away Team"] + "<br/>"
 				+ "Game Date: " + extraInfo[0]["Date"] + "<br/>"
