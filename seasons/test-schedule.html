@@ -65,7 +65,7 @@ function viewMatchDetails(Year,Type,Match){
 				+ "Ref 2: " + extraInfo[0]["Referee 2"] + "<br/>"
 				+ (extraInfo[0]["Comment"] != "" ? ("Comment: " + extraInfo[0]["Comment"] + "<br/>") : "");
 				
-	if (item["Timestamp"] !== undefined){
+	if (extraInfo[0]["Timestamp"] !== undefined){
 		modalHTML += ((extraInfo[0]["Home Score"] != "" && extraInfo[0]["Away Score"] != "") ? ("Score: Home " + extraInfo[0]["Home Score"] + " - Away " + extraInfo[0]["Away Score"] + "<br/>") : "")
 				+ (extraInfo[0]["MVP"] != "" ? ("MVP: " + extraInfo[0]["MVP"] + "<br/>") : "")
 				+ (extraInfo[0]["Comments/Additional Details"] != "" ? ("Game Synopsis: " + extraInfo[0]["Comments/Additional Details"] + "<br/>") : "")
