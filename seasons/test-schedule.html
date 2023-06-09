@@ -59,16 +59,16 @@ function viewMatchDetails(Year,Type,Match){
 	var extraInfo = _joinTable.filter(p => p["League Year"] === Year && p["League Type"] === Type && p["Match Number"] === Match);
 	//var extraInfo = reduceArayByKeys(details, ['Date', 'Home Team', "Away Team", "League Year", "League Type", "Match Number", "Comment", "Referee 1", "Referee 2", "Home Score", "Away Score", "MVP", "Comments/Additional Details"]);
 	var header = extraInfo[0]["League Year"] + " - " + extraInfo[0]["League Type"] + " - Match: " + extraInfo[0]["Match Number"];
-	var modalHTML = extraInfo[0]["Home Team"] + " v " + extraInfo[0]["Away Team"] + "<br/>"
-				+ "Game Date: " + extraInfo[0]["Date"] + "<br/>"
-				+ "Ref 1: " + extraInfo[0]["Referee 1"] + "<br/>"
-				+ "Ref 2: " + extraInfo[0]["Referee 2"] + "<br/>"
-				+ (extraInfo[0]["Comment"] != "" ? ("Comment: " + extraInfo[0]["Comment"] + "<br/>") : "");
+	var modalHTML = extraInfo[0]["Home Team"] + " v " + extraInfo[0]["Away Team"] + "<hr/>"
+				+ "Game Date: " + extraInfo[0]["Date"] + "<hr/>"
+				+ "Ref 1: " + extraInfo[0]["Referee 1"] + "<hr/>"
+				+ "Ref 2: " + extraInfo[0]["Referee 2"] + "<hr/>"
+				+ (extraInfo[0]["Comment"] != "" ? ("Comment: " + extraInfo[0]["Comment"] + "<hr/>") : "");
 				
 	if (extraInfo[0]["Timestamp"] !== undefined){
-		modalHTML += ((extraInfo[0]["Home Score"] != "" && extraInfo[0]["Away Score"] != "") ? ("Score: Home " + extraInfo[0]["Home Score"] + " - Away " + extraInfo[0]["Away Score"] + "<br/>") : "")
-				+ (extraInfo[0]["MVP"] != "" ? ("MVP: " + extraInfo[0]["MVP"] + "<br/>") : "")
-				+ (extraInfo[0]["Comments/Additional Details"] != "" ? ("Game Synopsis: " + extraInfo[0]["Comments/Additional Details"] + "<br/>") : "")
+		modalHTML += ((extraInfo[0]["Home Score"] != "" && extraInfo[0]["Away Score"] != "") ? ("Score: Home " + extraInfo[0]["Home Score"] + " - Away " + extraInfo[0]["Away Score"] + "<hr/>") : "")
+				+ (extraInfo[0]["MVP"] != "" ? ("MVP: " + extraInfo[0]["MVP"] + "<hr/>") : "")
+				+ (extraInfo[0]["Comments/Additional Details"] != "" ? ("Game Synopsis: " + extraInfo[0]["Comments/Additional Details"] + "<hr/>") : "")
 				+ (extraInfo[0]["Match Sheet Photo"] != "" ? ("Score Sheet: <a href='" + extraInfo[0]["Match Sheet Photo"] + "' target='_blank'>Click Here (Admin Access Only)</a>") : "");
 	}
 	message(modalHTML, header);
