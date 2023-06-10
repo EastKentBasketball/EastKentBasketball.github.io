@@ -27,7 +27,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com //use "/" for testing or "https://EKBA.co.uk" for live or "http://test.EKBA.com" for test iis
 twitter_username: jekyllrb
 github_username:  EKBA
-github_url: https://github.com/EKBA
+github_url: https://github.com/EastKentBasketball
 urliis: "http://test.EKBA.com" # the subpath of your site, e.g. /blog
 urljekyll: "http://localhost:4000" # the subpath of your site, e.g. /blog
 urllive: "https://ekba.co.uk" # the subpath of your site, e.g. /blog
