@@ -73,9 +73,9 @@ var _joinTable = null;
 async function getLeagueTable(){
 	var _resultsTable = null;
 	var _leagueTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vS2lKSaFjfsuZK7Lseo_HsGYhq1VpQQ_qRqntI2NQqc8qlCRAY919Zje_IaCbsorgAgtA-8noCqHyWL/pub?gid=197807890&single=true&output=csv", "CSV", "LeagueTable", (60*60));
-	if (_leagueTable != null) {_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "CSV", "ResultsTable", (60*60));}
-	if (_resultsTable != null){
-		_joinTable = leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]);
+	if (_leagueTable != null) {
+		_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "CSV", "ResultsTable", (60*60));}
+		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]) : _leagueTable;
 		_joinTable.forEach(function(item, index) {
 			item["More Details"] ="<span onclick=\"viewMatchDetails('" + item["League Year"] + "','" + item["League Type"] + "','" + item["Match Number"] + "')\">Click Here</span>";
 			var MatchDate = timestampToDateObj(item.Date + " 00:00:01").getTime();
@@ -98,9 +98,9 @@ async function getLeagueTable(){
 			}
 		});
 		var tableBuild = reduceArayByKeys(_joinTable, ['Date', 'Home Team', "Away Team", "League Year", "League Type", "Match Number", "More Details"]);
-		createTable(objectToTwodArray(tableBuild),"tbl");
+		createTable(objectToTwodArray(tableBuild),"tbl", [{"filterType":"table"},{"colName":"League Year","filterType":"dropdown"},{"colName":"League Type","filterType":"dropdown"}]);
 	} else{
-		createTable(objectToTwodArray(_leagueTable),"tbl");
+		getElem('tbl').insertAdjacentHTML("beforebegin", "Error Download Failed");
 	}
 }
 
