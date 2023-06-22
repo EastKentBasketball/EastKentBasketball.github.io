@@ -8,6 +8,7 @@ nav: "1"
 path: "Test-Contacts"
 breadcrumbs: "1"
 ---
+<a href="https://forms.gle/TYT1YJ9cyfvowZU9A" target="_blank">Club League Form Submission</a>
 <button onclick="forceLeagueRefresh()">Refresh Table</button>
 <table id=tbl class="break-table"></table>
 <style>
@@ -34,18 +35,9 @@ breadcrumbs: "1"
 	}
 </style>
 <script>
-const _maxDaysForSubmission = 1000*60*60*24*4;
 function forceContactRefresh(){
 	delLocal("ContactTable");
 	getContactTable();
-}
-
-
-
-function timestampToDateObj(str){
-	var datearr = str.split(" ")[0].split("/");
-	var timearr = str.split(" ")[1].split(":");
-	return new Date(datearr[2],datearr[1]-1,datearr[0],timearr[0],timearr[1],timearr[2]);
 }
 
 function viewContactDetails(Year,Club,Match){
