@@ -1,0 +1,83 @@
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: SiteMaster
+nav: "1"
+#title: "Contacts"
+path: "Test-Contacts"
+breadcrumbs: "1"
+---
+<button onclick="forceLeagueRefresh()">Refresh Table</button>
+<table id=tbl class="break-table"></table>
+<style>
+	.late{
+		background: red;
+		color: white;
+		padding: 5px;
+		font-weight: bold;
+	    line-height: 2;
+	}
+	.winner{
+		background: green;
+		color: white;
+		padding: 5px;
+		font-weight: bold;
+	    line-height: 2;
+	}
+	.draw{
+		background: yellow;
+		color: white;
+		padding: 5px;
+		font-weight: bold;
+		line-height: 2;
+	}
+</style>
+<script>
+const _maxDaysForSubmission = 1000*60*60*24*4;
+function forceContactRefresh(){
+	delLocal("ContactTable");
+	getContactTable();
+}
+
+
+
+function timestampToDateObj(str){
+	var datearr = str.split(" ")[0].split("/");
+	var timearr = str.split(" ")[1].split(":");
+	return new Date(datearr[2],datearr[1]-1,datearr[0],timearr[0],timearr[1],timearr[2]);
+}
+
+function viewContactDetails(Year,Club,Match){
+	var extraInfo = _joinTable.filter(p => p["League Year"] === Year && p["Club Name"] === Club);
+	var header = extraInfo[0]["League Year"] + " - " + extraInfo[0]["Club Name"];
+	var modalHTML = extraInfo[0]["Home Team"] + " v " + extraInfo[0]["Away Team"] + "<hr/>"
+				+ "Court Address: " + extraInfo[0]["Court Address"] + "<hr/>"
+				+ "Primary Playing Night: " + extraInfo[0]["Primary Playing Night"] + "<hr/>"
+				+ "Primary Tip Time: " + extraInfo[0]["Primary Tip Time"] + "<hr/>"
+				+ "Number Of Men Teams: " + extraInfo[0]["Number Of Men Teams"] + "<hr/>"
+				+ "Number Of Women Teams: " + extraInfo[0]["Number Of Women Teams"] + "<hr/>"
+				+ (extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] != "" ? ("Alternative Playing Nights-Tip Times: " + extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] + "<hr/>") : "");
+	message(modalHTML, header);
+}
+//League Year,Club Name,Court Address,Primary Playing Night,Primary Tip Time,Alternative Playing Nights-Tip Times [If Applicable],Number Of Men Teams,Number Of Women Teams,Number Of Women Teams [No Men Teams]
+var _contactTable = null;
+async function getContactTable(){
+	_contactTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "CSV", "ContactTable");
+	if (_contactTable != null) {
+		_contactTable.forEach(function(item, index) {
+			item["More Details"] ="<span onclick=\"viewContactDetails('" + item["League Year"] + "','" + item["Club Name"] + "')\">Click Here</span>";
+			item["Number Of Women Teams"] = item["Number Of Women Teams"] === null ? item["Number Of Women Teams [No Men Teams]"] : item["Number Of Women Teams"];
+		});
+		var tableBuild = reduceArayByKeys(_contactTable, ['League Year', 'Club Name', "Number Of Men Teams", "Number Of Women Teams", "More Details"]);
+		createTable(objectToTwodArray(tableBuild),"tbl", [{"colName":"League Year","filterType":"dropdown"},{"colName":"Club Name","filterType":"dropdown"}]);
+	} else {
+		getElem('tbl').insertAdjacentHTML("beforebegin", "Error Download Failed");
+	}
+}
+
+
+docReady(function () {
+	getContactTable();
+});
+</script>
