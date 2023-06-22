@@ -26,7 +26,8 @@ function viewContactDetails(Year,Club){
 				+ "Primary Tip Time: " + extraInfo[0]["Primary Tip Time"] + "<hr/>"
 				+ "Number Of Men Teams: " + extraInfo[0]["Number Of Men Teams"] + "<hr/>"
 				+ "Number Of Women Teams: " + extraInfo[0]["Number Of Women Teams"] + "<hr/>"
-				+ (extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] != "" ? ("Alternative Playing Nights-Tip Times: " + extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] + "<hr/>") : "");
+				+ (extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] != "" ? ("Alternative Playing Nights-Tip Times: " + extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] + "<hr/>") : "")
+				+ (extraInfo[0]["Junior Teams"] != "" ? ("Junior Teams: " + extraInfo[0]["Junior Teams"] + "<hr/>") : "");
 	message(modalHTML, header);
 }
 //League Year,Club Name,Court Address,Primary Playing Night,Primary Tip Time,Alternative Playing Nights-Tip Times [If Applicable],Number Of Men Teams,Number Of Women Teams,Number Of Women Teams [No Men Teams]
