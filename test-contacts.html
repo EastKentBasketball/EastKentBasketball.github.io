@@ -20,8 +20,8 @@ function forceContactRefresh(){
 function viewContactDetails(Year,Club){
 	var extraInfo = _contactTable.filter(p => p["League Year"] === Year && p["Club Name"] === Club);
 	var header = extraInfo[0]["League Year"] + " - " + extraInfo[0]["Club Name"];
-	var modalHTML = extraInfo[0]["Home Team"] + " v " + extraInfo[0]["Away Team"] + "<hr/>"
-				+ "Court Address: " + extraInfo[0]["Court Address"] + "<hr/>"
+	var modalHTML = 
+				"Court Address: " + extraInfo[0]["Court Address"] + "<hr/>"
 				+ "Primary Playing Night: " + extraInfo[0]["Primary Playing Night"] + "<hr/>"
 				+ "Primary Tip Time: " + extraInfo[0]["Primary Tip Time"] + "<hr/>"
 				+ "Number Of Men Teams: " + extraInfo[0]["Number Of Men Teams"] + "<hr/>"
@@ -36,7 +36,7 @@ async function getContactTable(){
 	if (_contactTable != null) {
 		_contactTable.forEach(function(item, index) {
 			item["More Details"] ="<span onclick=\"viewContactDetails('" + item["League Year"] + "','" + item["Club Name"] + "')\">Click Here</span>";
-			item["Number Of Women Teams"] = item["Number Of Women Teams"] === null ? item["Number Of Women Teams [No Men Teams]"] : item["Number Of Women Teams"];
+			item["Number Of Women Teams"] = item["Number Of Women Teams"] == "" ? item["Number Of Women Teams [No Men Teams]"] : item["Number Of Women Teams"];
 		});
 		var tableBuild = reduceArayByKeys(_contactTable, ['League Year', 'Club Name', "Number Of Men Teams", "Number Of Women Teams", "More Details"]);
 		createTable(objectToTwodArray(tableBuild),"tbl", [{"colName":"League Year","filterType":"dropdown"},{"colName":"Club Name","filterType":"dropdown"}]);
