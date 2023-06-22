@@ -9,39 +9,16 @@ path: "Test-Contacts"
 breadcrumbs: "1"
 ---
 <a href="https://forms.gle/TYT1YJ9cyfvowZU9A" target="_blank">Club League Form Submission</a>
-<button onclick="forceLeagueRefresh()">Refresh Table</button>
+<button onclick="forceContactRefresh()">Refresh Table</button>
 <table id=tbl class="break-table"></table>
-<style>
-	.late{
-		background: red;
-		color: white;
-		padding: 5px;
-		font-weight: bold;
-	    line-height: 2;
-	}
-	.winner{
-		background: green;
-		color: white;
-		padding: 5px;
-		font-weight: bold;
-	    line-height: 2;
-	}
-	.draw{
-		background: yellow;
-		color: white;
-		padding: 5px;
-		font-weight: bold;
-		line-height: 2;
-	}
-</style>
 <script>
 function forceContactRefresh(){
 	delLocal("ContactTable");
 	getContactTable();
 }
 
-function viewContactDetails(Year,Club,Match){
-	var extraInfo = _joinTable.filter(p => p["League Year"] === Year && p["Club Name"] === Club);
+function viewContactDetails(Year,Club){
+	var extraInfo = _contactTable.filter(p => p["League Year"] === Year && p["Club Name"] === Club);
 	var header = extraInfo[0]["League Year"] + " - " + extraInfo[0]["Club Name"];
 	var modalHTML = extraInfo[0]["Home Team"] + " v " + extraInfo[0]["Away Team"] + "<hr/>"
 				+ "Court Address: " + extraInfo[0]["Court Address"] + "<hr/>"
