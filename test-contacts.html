@@ -27,10 +27,10 @@ function viewContactDetails(Year,Club){
 				+ "Number Of Men Teams: " + extraInfo[0]["Number Of Men Teams"] + "<hr/>"
 				+ "Number Of Women Teams: " + extraInfo[0]["Number Of Women Teams"] + "<hr/>"
 				+ (extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] != "" ? ("Alternative Playing Nights-Tip Times: " + extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] + "<hr/>") : "")
-				+ (extraInfo[0]["Facebook Link"] != "" ? ("Facebook Link: " + extraInfo[0]["Facebook Link"] + "<hr/>") : "")
-				+ (extraInfo[0]["Twitter Link"] != "" ? ("Twitter Link: " + extraInfo[0]["Twitter Link"] + "<hr/>") : "")
-				+ (extraInfo[0]["Instagram Link"] != "" ? ("Instagram Link: " + extraInfo[0]["Instagram Link"] + "<hr/>") : "")
-				+ (extraInfo[0]["Club Website"] != "" ? ("Club Website: " + extraInfo[0]["Club Website"] + "<hr/>") : "")
+				+ (extraInfo[0]["Facebook Link"] != "" ? ("Facebook Link: <a target='_blank' href='" + extraInfo[0]["Facebook Link"] + "'>Click Here</a><hr/>") : "")
+				+ (extraInfo[0]["Twitter Link"] != "" ? ("Twitter Link: <a target='_blank' href='" + extraInfo[0]["Twitter Link"] + "'>Click Here</a><hr/>") : "")
+				+ (extraInfo[0]["Instagram Link"] != "" ? ("Instagram Link: <a target='_blank' href='" + extraInfo[0]["Instagram Link"] + "'>Click Here</a><hr/>") : "")
+				+ (extraInfo[0]["Club Website"] != "" ? ("Club Website: <a target='_blank' href='" + extraInfo[0]["Club Website"] + "'>Click Here</a><hr/>") : "")
 				+ (extraInfo[0]["Junior Teams"] != "" ? ("Junior Teams: " + extraInfo[0]["Junior Teams"] + "<hr/>") : "")
 				+ (extraInfo[0]["Club Synopsis"] != "" ? ("Club Synopsis<br/>" + extraInfo[0]["Club Synopsis"] + "<hr/>") : "");
 	message(modalHTML, header);
