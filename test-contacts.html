@@ -27,9 +27,15 @@ function viewContactDetails(Year,Club){
 				+ "Number Of Men Teams: " + extraInfo[0]["Number Of Men Teams"] + "<hr/>"
 				+ "Number Of Women Teams: " + extraInfo[0]["Number Of Women Teams"] + "<hr/>"
 				+ (extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] != "" ? ("Alternative Playing Nights-Tip Times: " + extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] + "<hr/>") : "")
-				+ (extraInfo[0]["Junior Teams"] != "" ? ("Junior Teams: " + extraInfo[0]["Junior Teams"] + "<hr/>") : "");
+				+ (extraInfo[0]["Facebook Link"] != "" ? ("Facebook Link: " + extraInfo[0]["Facebook Link"] + "<hr/>") : "")
+				+ (extraInfo[0]["Twitter Link"] != "" ? ("Twitter Link: " + extraInfo[0]["Twitter Link"] + "<hr/>") : "")
+				+ (extraInfo[0]["Instagram Link"] != "" ? ("Instagram Link: " + extraInfo[0]["Instagram Link"] + "<hr/>") : "")
+				+ (extraInfo[0]["Club Website"] != "" ? ("Club Website: " + extraInfo[0]["Club Website"] + "<hr/>") : "")
+				+ (extraInfo[0]["Junior Teams"] != "" ? ("Junior Teams: " + extraInfo[0]["Junior Teams"] + "<hr/>") : "")
+				+ (extraInfo[0]["Club Synopsis"] != "" ? ("Club Synopsis<br/>" + extraInfo[0]["Club Synopsis"] + "<hr/>") : "");
 	message(modalHTML, header);
 }
+//Facebook Link	Twitter Link	Instagram Link	Club Website	Club Synopsis
 //League Year,Club Name,Court Address,Primary Playing Night,Primary Tip Time,Alternative Playing Nights-Tip Times [If Applicable],Number Of Men Teams,Number Of Women Teams,Number Of Women Teams [No Men Teams]
 var _contactTable = null;
 async function getContactTable(){
@@ -38,6 +44,7 @@ async function getContactTable(){
 		_contactTable.forEach(function(item, index) {
 			item["More Details"] ="<span onclick=\"viewContactDetails('" + item["League Year"] + "','" + item["Club Name"] + "')\">Click Here</span>";
 			item["Number Of Women Teams"] = item["Number Of Women Teams"] == "" ? item["Number Of Women Teams [No Men Teams]"] : item["Number Of Women Teams"];
+			delete item["Number Of Women Teams [No Men Teams]"];
 		});
 		var tableBuild = reduceArayByKeys(_contactTable, ['League Year', 'Club Name', "Number Of Men Teams", "Number Of Women Teams", "More Details"]);
 		createTable(objectToTwodArray(tableBuild),"tbl", [{"colName":"League Year","filterType":"dropdown"},{"colName":"Club Name","filterType":"dropdown"}]);
