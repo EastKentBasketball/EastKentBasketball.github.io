@@ -73,12 +73,15 @@ async function getLeagueTable(){
 					item["Away Team"] = "<span class='draw'>" + item["Away Team"] + "</span>";
 				}
 				delete item["Timestamp"];
-			} else if ((MatchDate + _maxDaysForSubmission) < dateNow){
+			} else{
+				item["Submit Result"] = "https://docs.google.com/forms/d/e/1FAIpQLSe_zCLLs9ADsMD2oUFQ76WKY2ZMayX_5tVO2M4h4FNhK1RhLA/viewform?usp=pp_url&entry.821820740=" + item['League Year'] + "&entry.492201271=" + item['League Type'].replace(' ', '+') + "&entry.1142329140=" + item['Match Number'];
+			}
+			if (item["Timestamp"] === undefined && ((MatchDate + _maxDaysForSubmission) < dateNow)){
 				item.Date = "<span class='late'>" + item.Date + "</span>";
 			}
 		});
 		createTable(objectToTwodArray(_joinTable),"tbl", [{"filterType":"table"},{"colName":"League Year","filterType":"dropdown"},{"colName":"League Type","filterType":"dropdown"},{"colName":"Match Sheet Photo","hide":1,"colType":"weblink"},{"colName":"Home Score","hide":1},{"colName":"Away Score","hide":1},{"colName":"MVP","hide":1}
-		,{"colName":"Comments/Additional Details","hide":1},{"colName":"Referee 1","hide":1},{"colName":"Referee 2","hide":1},{"colName":"Comment","hide":1}]);
+		,{"colName":"Comments/Additional Details","hide":1},{"colName":"Referee 1","hide":1},{"colName":"Referee 2","hide":1},{"colName":"Comment","hide":1},{"colName":"Submit Result","hide":1,"colType":"weblink"}]);
 	} else {
 		getElem('tbl').insertAdjacentHTML("beforebegin", "Error Download Failed");
 	}
