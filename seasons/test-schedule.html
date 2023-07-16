@@ -9,6 +9,7 @@ path: "Seasons/Test-Schedule"
 breadcrumbs: "1"
 ---
 <button onclick="forceLeagueRefresh()">Refresh Table</button>
+<span class="late">Late Submission</span> <span class="winner">Winner</span> <span class="draw">Draw</span>
 <table id=tbl class="break-table"></table>
 <style>
 	.late{
@@ -27,7 +28,7 @@ breadcrumbs: "1"
 	}
 	.draw{
 		background: yellow;
-		color: white;
+		color: black;
 		padding: 5px;
 		font-weight: bold;
 		line-height: 2;
@@ -41,34 +42,13 @@ function forceLeagueRefresh(){
 	getLeagueTable();
 }
 
-
-
 function timestampToDateObj(str){
 	var datearr = str.split(" ")[0].split("/");
 	var timearr = str.split(" ")[1].split(":");
 	return new Date(datearr[2],datearr[1]-1,datearr[0],timearr[0],timearr[1],timearr[2]);
 }
 
-function viewMatchDetails(Year,Type,Match){
-	var extraInfo = _joinTable.filter(p => p["League Year"] === Year && p["League Type"] === Type && p["Match Number"] === Match);
-	var header = extraInfo[0]["League Year"] + " - " + extraInfo[0]["League Type"] + " - Match: " + extraInfo[0]["Match Number"];
-	var modalHTML = extraInfo[0]["Home Team"] + " v " + extraInfo[0]["Away Team"] + "<hr/>"
-				+ "Game Date: " + extraInfo[0]["Date"] + "<hr/>"
-				+ "Ref 1: " + extraInfo[0]["Referee 1"] + "<hr/>"
-				+ "Ref 2: " + extraInfo[0]["Referee 2"] + "<hr/>"
-				+ (extraInfo[0]["Comment"] != "" ? ("Comment: " + extraInfo[0]["Comment"] + "<hr/>") : "");
-				
-	if (extraInfo[0]["Timestamp"] !== undefined){
-		modalHTML += ((extraInfo[0]["Home Score"] != "" && extraInfo[0]["Away Score"] != "") ? ("Score: Home " + extraInfo[0]["Home Score"] + " - Away " + extraInfo[0]["Away Score"] + "<hr/>") : "")
-				+ (extraInfo[0]["MVP"] != "" ? ("MVP: " + extraInfo[0]["MVP"] + "<hr/>") : "")
-				+ (extraInfo[0]["Comments/Additional Details"] != "" ? ("Game Synopsis: " + extraInfo[0]["Comments/Additional Details"] + "<hr/>") : "")
-				+ (extraInfo[0]["Match Sheet Photo"] != "" ? ("Score Sheet: <a href='" + extraInfo[0]["Match Sheet Photo"] + "' target='_blank'>Click Here (Admin Access Only)</a>") : "");
-	} else{
-		modalHTML += "<a target='_blank' href='https://docs.google.com/forms/d/e/1FAIpQLSe_zCLLs9ADsMD2oUFQ76WKY2ZMayX_5tVO2M4h4FNhK1RhLA/viewform?usp=pp_url&entry.821820740=" + extraInfo[0]['League Year'] + "&entry.492201271=" + extraInfo[0]['League Type'].replace(' ', '+') + "&entry.1142329140=" + extraInfo[0]['Match Number'] + "'>Submit Result</a>";
-	}
-	message(modalHTML, header);
-}
-
+//Timestamp	League Year	League Type	Match Number	Home Score	Away Score	MVP	Comments/Additional Details	Match Sheet Photo	Home Team	Away Team	Referee 1	Referee 2	Date	Comment
 var _joinTable = null;
 async function getLeagueTable(){
 	var _resultsTable = null;
@@ -77,7 +57,6 @@ async function getLeagueTable(){
 		_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "CSV", "ResultsTable", (60*60));
 		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]) : _leagueTable;
 		_joinTable.forEach(function(item, index) {
-			item["More Details"] ="<span onclick=\"viewMatchDetails('" + item["League Year"] + "','" + item["League Type"] + "','" + item["Match Number"] + "')\">Click Here</span>";
 			var MatchDate = timestampToDateObj(item.Date + " 00:00:01").getTime();
 			var dateNow = new Date(UTCString(true)).getTime();
 			if (item["Timestamp"] !== undefined){
@@ -93,12 +72,13 @@ async function getLeagueTable(){
 					item["Home Team"] = "<span class='draw'>" + item["Home Team"] + "</span>";
 					item["Away Team"] = "<span class='draw'>" + item["Away Team"] + "</span>";
 				}
+				delete item["Timestamp"];
 			} else if ((MatchDate + _maxDaysForSubmission) < dateNow){
 				item.Date = "<span class='late'>" + item.Date + "</span>";
 			}
 		});
-		var tableBuild = reduceArayByKeys(_joinTable, ['Date', 'Home Team', "Away Team", "League Year", "League Type", "Match Number", "More Details"]);
-		createTable(objectToTwodArray(tableBuild),"tbl", [{"filterType":"table"},{"colName":"League Year","filterType":"dropdown"},{"colName":"League Type","filterType":"dropdown"}]);
+		createTable(objectToTwodArray(_joinTable),"tbl", [{"filterType":"table"},{"colName":"League Year","filterType":"dropdown"},{"colName":"League Type","filterType":"dropdown"},{"colName":"Match Sheet Photo","hide":1,"colType":"weblink"},{"colName":"Home Score","hide":1},{"colName":"Away Score","hide":1},{"colName":"MVP","hide":1}
+		,{"colName":"Comments/Additional Details","hide":1},{"colName":"Referee 1","hide":1},{"colName":"Referee 2","hide":1},{"colName":"Comment","hide":1}]);
 	} else {
 		getElem('tbl').insertAdjacentHTML("beforebegin", "Error Download Failed");
 	}

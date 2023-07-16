@@ -8,7 +8,7 @@ nav: "1"
 path: "Test-Contacts"
 breadcrumbs: "1"
 ---
-<a href="https://forms.gle/TYT1YJ9cyfvowZU9A" target="_blank">Club League Form Submission</a>
+<a style="text-align: center;background-color: var(--green-color);width: 100%;display: block;border: none;padding: var(--padding);border-radius: var(--radius);margin: var(--padding) 0;cursor: pointer;" href="https://forms.gle/TYT1YJ9cyfvowZU9A" target="_blank">Clubs League Submission Form</a>
 <button onclick="forceContactRefresh()">Refresh Table</button>
 <table id=tbl class="break-table"></table>
 <script>
@@ -17,42 +17,21 @@ function forceContactRefresh(){
 	getContactTable();
 }
 
-function viewContactDetails(Year,Club){
-	var extraInfo = _contactTable.filter(p => p["League Year"] === Year && p["Club Name"] === Club);
-	var header = extraInfo[0]["League Year"] + " - " + extraInfo[0]["Club Name"];
-	var modalHTML = 
-				"Court Address: " + extraInfo[0]["Court Address"] + "<hr/>"
-				+ "Primary Playing Night: " + extraInfo[0]["Primary Playing Night"] + "<hr/>"
-				+ "Primary Tip Time: " + extraInfo[0]["Primary Tip Time"] + "<hr/>"
-				+ "Number Of Men Teams: " + extraInfo[0]["Number Of Men Teams"] + "<hr/>"
-				+ "Number Of Women Teams: " + extraInfo[0]["Number Of Women Teams"] + "<hr/>"
-				+ (extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] != "" ? ("Alternative Playing Nights-Tip Times: " + extraInfo[0]["Alternative Playing Nights-Tip Times [If Applicable]"] + "<hr/>") : "")
-				+ (extraInfo[0]["Facebook Link"] != "" ? ("Facebook Link: <a target='_blank' href='" + extraInfo[0]["Facebook Link"] + "'>Click Here</a><hr/>") : "")
-				+ (extraInfo[0]["Twitter Link"] != "" ? ("Twitter Link: <a target='_blank' href='" + extraInfo[0]["Twitter Link"] + "'>Click Here</a><hr/>") : "")
-				+ (extraInfo[0]["Instagram Link"] != "" ? ("Instagram Link: <a target='_blank' href='" + extraInfo[0]["Instagram Link"] + "'>Click Here</a><hr/>") : "")
-				+ (extraInfo[0]["Club Website"] != "" ? ("Club Website: <a target='_blank' href='" + extraInfo[0]["Club Website"] + "'>Click Here</a><hr/>") : "")
-				+ (extraInfo[0]["Junior Teams"] != "" ? ("Junior Teams: " + extraInfo[0]["Junior Teams"] + "<hr/>") : "")
-				+ (extraInfo[0]["Club Synopsis"] != "" ? ("Club Synopsis<br/>" + extraInfo[0]["Club Synopsis"] + "<hr/>") : "");
-	message(modalHTML, header);
-}
-//Facebook Link	Twitter Link	Instagram Link	Club Website	Club Synopsis
-//League Year,Club Name,Court Address,Primary Playing Night,Primary Tip Time,Alternative Playing Nights-Tip Times [If Applicable],Number Of Men Teams,Number Of Women Teams,Number Of Women Teams [No Men Teams]
 var _contactTable = null;
 async function getContactTable(){
 	_contactTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "CSV", "ContactTable");
 	if (_contactTable != null) {
 		_contactTable.forEach(function(item, index) {
-			item["More Details"] ="<span onclick=\"viewContactDetails('" + item["League Year"] + "','" + item["Club Name"] + "')\">Click Here</span>";
 			item["Number Of Women Teams"] = item["Number Of Women Teams"] == "" ? item["Number Of Women Teams [No Men Teams]"] : item["Number Of Women Teams"];
 			delete item["Number Of Women Teams [No Men Teams]"];
 		});
-		var tableBuild = reduceArayByKeys(_contactTable, ['League Year', 'Club Name', "Number Of Men Teams", "Number Of Women Teams", "More Details"]);
-		createTable(objectToTwodArray(tableBuild),"tbl", [{"colName":"League Year","filterType":"dropdown"},{"colName":"Club Name","filterType":"dropdown"}]);
+		createTable(objectToTwodArray(_contactTable),"tbl", [{"colName":"League Year","filterType":"dropdown"},{"colName":"Club Name","filterType":"dropdown"},{"colName":"Court Address","hide":1},{"colName":"Primary Playing Night","hide":1}
+		,{"colName":"Primary Tip Time","hide":1},{"colName":"Alternative Playing Nights-Tip Times [If Applicable]","hide":1},{"colName":"Junior Teams","hide":1},{"colName":"Facebook Link","hide":1,"colType":"weblink"},{"colName":"Twitter Link","hide":1,"colType":"weblink"}
+		,{"colName":"Instagram Link","hide":1,"colType":"weblink"},{"colName":"Club Website","hide":1,"colType":"weblink"},{"colName":"Club Synopsis","hide":1]);
 	} else {
 		getElem('tbl').insertAdjacentHTML("beforebegin", "Error Download Failed");
 	}
 }
-
 
 docReady(function () {
 	getContactTable();
