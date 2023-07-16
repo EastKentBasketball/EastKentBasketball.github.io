@@ -27,7 +27,7 @@ async function getContactTable(){
 		});
 		createTable(objectToTwodArray(_contactTable),"tbl", [{"colName":"League Year","filterType":"dropdown"},{"colName":"Club Name","filterType":"dropdown"},{"colName":"Court Address","hide":1},{"colName":"Primary Playing Night","hide":1}
 		,{"colName":"Primary Tip Time","hide":1},{"colName":"Alternative Playing Nights-Tip Times [If Applicable]","hide":1},{"colName":"Junior Teams","hide":1},{"colName":"Facebook Link","hide":1,"colType":"weblink"},{"colName":"Twitter Link","hide":1,"colType":"weblink"}
-		,{"colName":"Instagram Link","hide":1,"colType":"weblink"},{"colName":"Club Website","hide":1,"colType":"weblink"},{"colName":"Club Synopsis","hide":1]);
+		,{"colName":"Instagram Link","hide":1,"colType":"weblink"},{"colName":"Club Website","hide":1,"colType":"weblink"},{"colName":"Club Synopsis","hide":1}]);
 	} else {
 		getElem('tbl').insertAdjacentHTML("beforebegin", "Error Download Failed");
 	}
