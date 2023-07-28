@@ -5,32 +5,35 @@
 layout: SiteMaster
 nav: "1"
 title: "Contacts"
-path: "Contacts"
+path: "Test-Contacts"
 breadcrumbs: "1"
 ---
-<p>For any general enquires regarding the East Kent Basketball Association (EKBA), please contact our Chairman and Secretary Brian directly at bsteele4@sky.com, or alternatively contact us at admin@eastkentbasketball.co.uk</p>
-<p>To lookup or join a club please click on a table row below to see the contact details.</p>
-<label class="fixed-quarter">Filter League</label>
-<select id="slcFilterLeague" class="fixed-three-quarter" value="" onchange="filterTable('myTable2', 0, this.value, 1)"><option value="" selected>All</option><option value="Men">Men's</option><option value="Womens">Women's</option></select><hr/>
-<hr />
+<a style="text-align: center;background-color: var(--green-color);width: 100%;display: block;border: none;padding: var(--padding);border-radius: var(--radius);margin: var(--padding) 0;cursor: pointer;" href="https://forms.gle/TYT1YJ9cyfvowZU9A" target="_blank">Clubs League Submission Form</a>
+<button onclick="forceContactRefresh()">Refresh Table</button>
+<table id=tbl class="break-table"></table>
 <script>
-var teams =[{"League Association":"Men","Club Association":"CANTERBURY CHRIST CHURCH UNIVERSITY","Team Name":"CCCU Men"},{"League Association":"Men","Club Association":"FOLKESTONE SAINTS","Team Name":"Saints Men A"},{"League Association":"Men","Club Association":"FOLKESTONE SAINTS","Team Name":"Saints Men B"},{"League Association":"Men","Club Association":"HERNE BAY","Team Name":"Bay Men A"},{"League Association":"Men","Club Association":"HERNE BAY","Team Name":"Bay Men B"},{"League Association":"Men","Club Association":"LTU TEAM","Team Name":"LTU Mens"},{"League Association":"Men","Club Association":"THANET LIONS","Team Name":"Thanet Mens"},{"League Association":"Men","Club Association":"UNIVERSITY OF KENT","Team Name":"Uni Of Kent Mens"},{"League Association":"Men","Club Association":"WHITSTABLE","Team Name":"Whitstable Men"},{"League Association":"Womens","Club Association":"BAYPOINT BLAZERS","Team Name":"BAYPOINT BLAZERS"},{"League Association":"Womens","Club Association":"CANTERBURY CHRIST CHURCH UNIVERSITY","Team Name":"CCCU Women"},{"League Association":"Womens","Club Association":"CANTERBURY JACKS","Team Name":"CANTERBURY JACKS"},{"League Association":"Womens","Club Association":"DARTFORD","Team Name":"Dartford Women"},{"League Association":"Womens","Club Association":"FOLKESTONE SAINTS","Team Name":"Saints Women"},{"League Association":"Womens","Club Association":"HERNE BAY","Team Name":"Bay Women"}];
-var clubDetails = [{"Club":"BAYPOINT BLAZERS","Full Address":"Baypoint Club _ Ramsgate Road _ Sandwich _ CT13 9QL"},{"Club":"CANTERBURY CHRIST CHURCH UNIVERSITY","Full Address":"Christ Church University Sports Centre _ Pilgrims Way _ Canterbury _ CT1 1XS"},{"Club":"CANTERBURY JACKS","Full Address":"Canterbury College _ New Dover Road _ CT1 3AJ"},{"Club":"DARTFORD","Full Address":"TBC"},{"Club":"FOLKESTONE SAINTS","Full Address":"Folkestone Sports Centre _ Radnor Park Ave _ Folkestone _ KENT _ CT19 5HX"},{"Club":"HERNE BAY","Full Address":"Herne Bay High School _ Bullockstone Rd _ Herne Bay _ CT6 7NS"},{"Club":"LTU TEAM","Full Address":"Spires Academy _ Bredlands Lane _ Sturry _ CT2 0HD"},{"Club":"THANET LIONS","Full Address":"Ursuline College _ 225 Canterbury Road _ Westgate-on-Sea _ CT8 8LX"},{"Club":"UNIVERSITY OF KENT","Full Address":"Sports Centre _ University of Kent _ Giles Lane _ Canterbury _ CT2 7NL"},{"Club":"WHITSTABLE","Full Address":"Canterbury College _ New Dover Road _ Canterbury _ CT1 3AJ"}];
+function forceContactRefresh(){
+	delLocal("ContactTable");
+	getContactTable();
+}
+
+var _contactTable = null;
+async function getContactTable(){
+	_contactTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "CSV", "ContactTable");
+	if (_contactTable != null) {
+		_contactTable.forEach(function(item, index) {
+			item["Number Of Women Teams"] = item["Number Of Women Teams"] == "" ? item["Number Of Women Teams [No Men Teams]"] : item["Number Of Women Teams"];
+			delete item["Number Of Women Teams [No Men Teams]"];
+		});
+		createTable(objectToTwodArray(_contactTable),"tbl", [{"colName":"League Year","filterType":"dropdown"},{"colName":"Club Name","filterType":"dropdown"},{"colName":"Court Address","hide":1},{"colName":"Primary Playing Night","hide":1}
+		,{"colName":"Primary Tip Time","hide":1},{"colName":"Alternative Playing Nights-Tip Times [If Applicable]","hide":1},{"colName":"Junior Teams","hide":1},{"colName":"Facebook Link","hide":1,"colType":"weblink"},{"colName":"Twitter Link","hide":1,"colType":"weblink"}
+		,{"colName":"Instagram Link","hide":1,"colType":"weblink"},{"colName":"Club Website","hide":1,"colType":"weblink"},{"colName":"Club Synopsis","hide":1}]);
+	} else {
+		getElem('tbl').insertAdjacentHTML("beforebegin", "Error Download Failed");
+	}
+}
 
 docReady(function () {
-	createTable(objectToTwodArray(teams), "myTable2");
-	const tbody = document.querySelector('#myTable2 tbody');
-tbody.addEventListener('click', function (e) {
-  const cell = e.target.closest('td');
-  if (!cell) {return;} // Quit, not clicked on a cell
-  const row = cell.parentElement;
-  var text = getClass('tablerowcontent', row.cells[1])[0].innerHTML;
-  var Details = clubDetails.filter(function (item){return item.Club == text;})[0];
- // alert(StringReplaceAll(Details["Full Address"], " _ ", "\n"));
-  
-message("<a href='mailto:admin@eastkentbasketball.co.uk?Subject=Website%20Enquiry%20For%20-%20" + Details.Club + "'>Email A Request</a><hr>"+StringReplaceAll(Details["Full Address"], " _ ", "<br/>"), text)
-});
+	getContactTable();
 });
 </script>
-<table id="myTable2" class="break-table"></table>
-
