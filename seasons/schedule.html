@@ -47,7 +47,31 @@ function timestampToDateObj(str){
 	var timearr = str.split(" ")[1].split(":");
 	return new Date(datearr[2],datearr[1]-1,datearr[0],timearr[0],timearr[1],timearr[2]);
 }
-
+function buildResultTable(arr){
+	return Object.values(arr.reduce((acc, obj) => {
+	  obj["Home Score"] = +obj["Home Score"] || 0; // convert to number
+	  obj["Away Score"] = +obj["Away Score"] || 0; // convert to number
+	  const key = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Home Team"]; // unique combination of ids
+	  const key2 = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Away Team"]; // unique combination of ids
+	  acc[key] = acc[key] || {"League Year":obj["League Year"],"League Type":obj["League Type"],"Team":obj["Home Team"],"Games":0,"Forfeit":0,"Won":0,"Lost":0,"Points For":0,"Points Against":0,"Point Difference":0,"League Points":0};
+	  acc[key2] = acc[key2] || {"League Year":obj["League Year"],"League Type":obj["League Type"],"Team":obj["Away Team"],"Games":0,"Forfeit":0,"Won":0,"Lost":0,"Points For":0,"Points Against":0,"Point Difference":0,"League Points":0};
+	  acc[key]["Games"]++;
+	  acc[key]["Points For"]+=obj["Home Score"];
+	  acc[key]["Points Against"]+=obj["Away Score"];
+	  acc[key]["Point Difference"]+=( obj["Home Score"] - obj["Away Score"] );
+	  if(obj["Home Score"] > 0 ||  obj["Away Score"] > 0){
+		obj["Home Score"] > obj["Away Score"] ? acc[key]["League Points"]+=3: (obj["Match Sheet Photo"] == "" ? null : acc[key]["League Points"]++);
+		obj["Home Score"] > obj["Away Score"] ? acc[key]["Won"]++: acc[key]["Lost"]++;
+		obj["Home Score"] < obj["Away Score"] ? acc[key2]["League Points"]+=3: (obj["Match Sheet Photo"] == "" ? null : acc[key2]["League Points"]++);
+		obj["Home Score"] < obj["Away Score"] ? acc[key2]["Won"]++: acc[key2]["Lost"]++;
+	  }
+	  acc[key2]["Games"]++;
+	  acc[key2]["Points For"]+=obj["Away Score"];
+	  acc[key2]["Points Against"]+=obj["Home Score"];
+	  acc[key2]["Point Difference"]+=( - obj["Home Score"] + obj["Away Score"] );
+	  return acc;
+	}, {}));
+}
 //Timestamp	League Year	League Type	Match Number	Home Score	Away Score	MVP	Comments/Additional Details	Match Sheet Photo	Home Team	Away Team	Referee 1	Referee 2	Date	Comment
 var _joinTable = null;
 async function getLeagueTable(){
@@ -56,6 +80,7 @@ async function getLeagueTable(){
 	if (_leagueTable != null) {
 		_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "CSV", "ResultsTable", (60*60));
 		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]) : _leagueTable;
+		createTable(objectToTwodArray(buildResultTable(_joinTable)),"tbl"[{"colName":"League Year","filterType":"dropdown"},{"colName":"League Type","filterType":"dropdown"}]);
 		_joinTable.forEach(function(item, index) {
 			var MatchDate = timestampToDateObj(item.Date + " 00:00:01").getTime();
 			var dateNow = new Date(UTCString(true)).getTime();
