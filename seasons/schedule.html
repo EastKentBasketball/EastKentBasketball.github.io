@@ -82,7 +82,7 @@ async function getLeagueTable(){
 	if (_leagueTable != null) {
 		_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "CSV", "ResultsTable", (60*60));
 		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]) : _leagueTable;
-		createTable(objectToTwodArray(buildResultTable(_joinTable)),"tbl2"[{"colName":"League Year","filterType":"dropdown"},{"colName":"League Type","filterType":"dropdown"}]);
+		createTable(objectToTwodArray(buildResultTable(_joinTable)),"tbl2",[{"colName":"League Year","filterType":"dropdown"},{"colName":"League Type","filterType":"dropdown"}]);
 		_joinTable.forEach(function(item, index) {
 			var MatchDate = timestampToDateObj(item.Date + " 00:00:01").getTime();
 			var dateNow = new Date(UTCString(true)).getTime();
