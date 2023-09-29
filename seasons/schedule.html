@@ -62,9 +62,9 @@ function buildResultTable(arr){
 	  acc[key]["Points Against"]+=obj["Away Score"];
 	  acc[key]["Point Difference"]+=( obj["Home Score"] - obj["Away Score"] );
 	  if(obj["Home Score"] > 0 ||  obj["Away Score"] > 0){
-		obj["Home Score"] > obj["Away Score"] ? acc[key]["League Points"]+=3: (obj["Match Sheet Photo"] == "" ? null : acc[key]["League Points"]++);
+		obj["Home Score"] > obj["Away Score"] ? acc[key]["League Points"]+=3: (obj["Match Sheet Photo"] == "" ? acc[key]["Forfeit"]++ : acc[key]["League Points"]++);
 		obj["Home Score"] > obj["Away Score"] ? acc[key]["Won"]++: acc[key]["Lost"]++;
-		obj["Home Score"] < obj["Away Score"] ? acc[key2]["League Points"]+=3: (obj["Match Sheet Photo"] == "" ? null : acc[key2]["League Points"]++);
+		obj["Home Score"] < obj["Away Score"] ? acc[key2]["League Points"]+=3: (obj["Match Sheet Photo"] == "" ? acc[key2]["Forfeit"]++ : acc[key2]["League Points"]++);
 		obj["Home Score"] < obj["Away Score"] ? acc[key2]["Won"]++: acc[key2]["Lost"]++;
 	  }
 	  acc[key2]["Games"]++;
