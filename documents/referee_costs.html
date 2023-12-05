@@ -8,11 +8,11 @@ title: "Referee Costs"
 path: "Documents/Referee_Costs"
 breadcrumbs: "1"
 ---
-<label>Ref 1 Level: <input type=number min=2 max=4 id=inpRef1Lvl></label>
+<label>Ref 1 Level: <select id=inpRef1Lvl><option disabled>0</option><option selected>2</option><option>3</option><option>4</option></select></label>
 <label>Ref 1 Return Mileage: <input id=inpRef1Mileage type=number min=0></label>
 <label>Solo Reffing? <input id=inpRefSolo type=checkbox></label>
 <hr style='background:white;'>
-<label>Ref 2 Level: <input type=number min=2 max=4 id=inpRef2Lvl></label>
+<label>Ref 2 Level: <select id=inpRef2Lvl><option disabled>0</option><option selected>2</option><option>3</option><option>4</option></select></label>
 <label>Ref 2 Return Mileage: <input id=inpRef2Mileage type=number min=0></label>
 <hr style='background:white;'>
 <span id=output></span>
@@ -42,10 +42,6 @@ function costs(){
 	var soloRef = inpRefSolo.checked;
 	inpRef2Lvl.disabled = soloRef
 	inpRef2Mileage.disabled = soloRef
-	inpRef1Mileage.value = inpRef1Mileage.value < 0 ? 0 : inpRef1Mileage.value;
-	inpRef2Mileage.value = inpRef2Mileage.value < 0 ? 0 : inpRef2Mileage.value;
-	inpRef1Lvl.value = inpRef1Lvl.value < 2 ? 2 : (inpRef1Lvl.value > 4 ? 4 : inpRef1Lvl.value);
-	inpRef2Lvl.value = inpRef2Lvl.value < 2 ? 2 : (inpRef2Lvl.value > 4 ? 4 : inpRef2Lvl.value);
 	var mileage2 = 0;
 	var ref2 = 0;
 	if(soloRef){
