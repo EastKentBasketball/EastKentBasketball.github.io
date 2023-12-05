@@ -55,6 +55,7 @@ function costs(){
 	var ref1 = refCost(inpRef1Lvl.value) + (mileage1 > maxMileage ? maxMileage : mileage1);
 	isOK = (ref1 + ref2) > 0 && ((!inpRefSolo.checked && (ref2 > 0)) || inpRefSolo.checked)
 	output.innerHTML = isOK ? "Ref 1: £" + ref1.toFixed(2) + "<br>Ref 2: £" + ref2.toFixed(2) + "<br>Total: £" + (ref1 + ref2).toFixed(2) + "<br>Split Cost Per Team: £" + ((ref1 + ref2)/2).toFixed(2) : "Input all data.";
+	initiDropdowns();
 }
 function refSolo(val){
 	inpRef2Lvl.disabled = val
