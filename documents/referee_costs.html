@@ -8,11 +8,11 @@ title: "Referee Costs"
 path: "Documents/Referee_Costs"
 breadcrumbs: "1"
 ---
-<label>Ref 1 Level: <select id=inpRef1Lvl><option disabled>0</option><option selected>2</option><option>3</option><option>4</option></select></label>
+<label>Ref 1 Level: <select id=inpRef1Lvl onchange='costs()'><option disabled value=0>0</option><option selected value=2>2</option><option value=4>3</option><option value=4>4</option></select></label>
 <label>Ref 1 Return Mileage: <input id=inpRef1Mileage type=number min=0></label>
 <label>Solo Reffing? <input id=inpRefSolo type=checkbox></label>
 <hr style='background:white;'>
-<label>Ref 2 Level: <select id=inpRef2Lvl><option disabled>0</option><option selected>2</option><option>3</option><option>4</option></select></label>
+<label>Ref 2 Level: <select id=inpRef2Lvl onchange='costs()'><option disabled value=0>0</option><option selected value=2>2</option><option value=4>3</option><option value=4>4</option></select></label>
 <label>Ref 2 Return Mileage: <input id=inpRef2Mileage type=number min=0></label>
 <hr style='background:white;'>
 <span id=output></span>
