@@ -84,7 +84,7 @@ async function getLeagueTable(){
 		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]) : _leagueTable;
 		createTable(objectToTwodArray(buildResultTable(_joinTable)),"tbl2",[{"colName":"League Year","filterType":"dropdown"},{"colName":"League Type","filterType":"dropdown"}]);
 		_joinTable.forEach(function(item, index) {
-			var MatchDate = timestampToDateObj(item.Date + " 00:00:01").getTime();
+			var MatchDate = new Date(item.Date).getTime();
 			var dateNow = new Date(UTCString(true)).getTime();
 			if (item["Timestamp"] !== undefined){
 				var SubmitTime = timestampToDateObj(item["Timestamp"]).getTime();
