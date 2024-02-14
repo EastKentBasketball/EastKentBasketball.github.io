@@ -1,0 +1,19 @@
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: SiteMaster
+nav: "1"
+#title: "Results"
+path: "Seasons/Results"
+breadcrumbs: "1"
+---
+<button onclick="forceLeagueRefresh()">Refresh Table</button>
+<div id=tbl></div>
+<script>
+
+const z = {"filter":{"Game Status":["To Play","exact"]},"sort":["Date"],"page":[1,250],"getArrFunction":"getResultTable","id":"test","display":"table-break","colData":[{"col":"League Year","filter":"dropdown"},{"col":"League Type","filter":"dropdown"},{"col":"Home Score","hide":"1"},{"col":"Away Score","hide":"1"},{"col":"MVP","hide":"1"},{"col":"Comments/Additional Details","hide":"1"},{"col":"Match Sheet Photo","hide":"1"},{"col":"Game Status","hide":"2","filter":"dropdown"},{"col":"Referee 1","hide":"1"},{"col":"Referee 2","hide":"1"},{"col":"Date","type":"date"},{"col":"Comment","hide":"2"},{"col":"Submit Result","hide":"1"}]};
+docReady(function () {
+	arrAdjust(z);
+});
+</script>
