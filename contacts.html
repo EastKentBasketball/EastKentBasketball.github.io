@@ -20,7 +20,7 @@ function forceContactRefresh(){
 
 var _contactTable = null;
 async function getContactTable(){
-	_contactTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "CSV", "ContactTable");
+	_contactTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "OBJECT", "ContactTable");
 	if (_contactTable != null) {
 		_contactTable.forEach(function(item, index) {
 			item["Number Of Women Teams"] = item["Number Of Women Teams"] == "" ? item["Number Of Women Teams [No Men Teams]"] : item["Number Of Women Teams"];

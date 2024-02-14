@@ -51,7 +51,7 @@ var y = x.filter(function (item2){
 return item2.Home.toUpperCase().indexOf(id) > -1  || item2.Away.toUpperCase().indexOf(id) > -1
 });
 y = (y.length == 0) ? [{"-":"No Results"}]: y;
-	createTable(objectToTwodArray(y), "myTable");
+	createTable((y), "myTable");
 }
 docReady(function () {
 //console.log(seasons);
@@ -78,7 +78,7 @@ return ax;
 }
 function ResultsTable(_season, _league){
 var ax = get_ResultsTable(_season, _league)
-createTable(objectToTwodArray(ax), "myTable");
+createTable((ax), "myTable");
 OverviewTable(_season, _league)
 //return ax;
 }
@@ -117,7 +117,7 @@ ax.forEach(function (item){
 	away["To Play"] = away.Games - away.Won - away.Lost;
 	
 })
-createTable(objectToTwodArray(overview), "Overview");
+createTable((overview), "Overview");
 console.log(overview);
 //return ax;
 }

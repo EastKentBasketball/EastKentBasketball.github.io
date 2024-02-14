@@ -37,10 +37,10 @@ var Grove = [["Season","Grove Cup Champions"],["2016/17","Canterbury Crusaders"]
 
 var AdamsPlate = [["Season","Adams Plate Champions"],["2016/17","Ashford Outlaws"],["2015/16","UKC"],["2014/15","Herne Bay 'A'"],["2013/14","Whitstable"],["2012/13","Invicta"],["2011/12","Herne Bay"],["2010/11","Christ Church"],["2009/10","Christ Church"],["2008/09","Ashford"],["2007/08","Herne Bay"],["2006/07","Pfizer/Lions"],["2005/06","Herne Bay"],["2004/05","Herne Bay"],["2003/04","Pfizer/Lions"],["2002/03","Ashford"],["2001/02","Pfizer/Lions"],["2000/01","Ashford"],["1999/00","Whitstable"],["1998/99","Whitstable"],["1997/98","Lions ‘A’"],["1996/97","Whitstable"],["1995/96","Saints ‘C’"],["1994/95","Dover Bullets"],["1993/94","Dover CTA"],["1992/93","Whitstable ‘A’"],["1991/92","Wizards"],["1990/91","Herne Bay"],["1989/90","Cardy"],["1988/89","Team Traction"],["1987/88","Team Traction"],["1986/87","Ashford"],["1985/86","St Peters Lions ‘B’"],["1984/85","Whitstable Pirates"],["1983/84","Saints ‘A’"],["1982/83","UKC ‘A’"],["1981/82","Greek Taverna"],["1980/81","Saints Connaught"],["1979/80","Kenhire Ashford"],["1978/79","Friars"],["1977/78","Broadstairs Lions ‘A’"],["1976/77","Pharosians I"]];
 function showtablex(id){
-	createTable(window[id], "myTable");
+	createTable(arrayToObject(window[id]), "myTable");
 }
 docReady(function () {
-	createTable(PresidentsAwardForGoodServices, "myTable");
+	createTable(arrayToObject(PresidentsAwardForGoodServices), "myTable");
 });
 </script>
 <label class="fixed-quarter">Show Result History</label>

@@ -19,7 +19,7 @@ var teams =[{"League Association":"Men","Club Association":"CANTERBURY CHRIST CH
 var clubDetails = [{"Club":"BAYPOINT BLAZERS","Full Address":"Baypoint Club _ Ramsgate Road _ Sandwich _ CT13 9QL"},{"Club":"CANTERBURY CHRIST CHURCH UNIVERSITY","Full Address":"Christ Church University Sports Centre _ Pilgrims Way _ Canterbury _ CT1 1XS"},{"Club":"CANTERBURY JACKS","Full Address":"Canterbury College _ New Dover Road _ CT1 3AJ"},{"Club":"DARTFORD","Full Address":"TBC"},{"Club":"FOLKESTONE SAINTS","Full Address":"Folkestone Sports Centre _ Radnor Park Ave _ Folkestone _ KENT _ CT19 5HX"},{"Club":"HERNE BAY","Full Address":"Herne Bay High School _ Bullockstone Rd _ Herne Bay _ CT6 7NS"},{"Club":"LTU TEAM","Full Address":"Spires Academy _ Bredlands Lane _ Sturry _ CT2 0HD"},{"Club":"THANET LIONS","Full Address":"Ursuline College _ 225 Canterbury Road _ Westgate-on-Sea _ CT8 8LX"},{"Club":"UNIVERSITY OF KENT","Full Address":"Sports Centre _ University of Kent _ Giles Lane _ Canterbury _ CT2 7NL"},{"Club":"WHITSTABLE","Full Address":"Canterbury College _ New Dover Road _ Canterbury _ CT1 3AJ"}];
 
 docReady(function () {
-	createTable(objectToTwodArray(teams), "myTable2");
+	createTable((teams), "myTable2");
 	const tbody = document.querySelector('#myTable2 tbody');
 tbody.addEventListener('click', function (e) {
   const cell = e.target.closest('td');
