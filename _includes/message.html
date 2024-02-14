@@ -5,3 +5,14 @@
 		<p class="messageText"></p>
 	</div>
 </div>
+<script>
+	function message(txt = "", heading = "Alert"){
+		var messageElem = getElem('divMessageModal');
+		messageElem.style.display = 'none';
+		getClass("messageHeading",messageElem)[0].innerHTML = heading;
+		getClass("messageText",messageElem)[0].innerHTML = txt;
+		if(txt !=""){
+			messageElem.style.display = 'block';
+		}
+	}
+</script>
