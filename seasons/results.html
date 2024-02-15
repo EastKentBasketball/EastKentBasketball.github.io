@@ -16,7 +16,7 @@ var mnth = new Date().getMonth();
 var yrFilter = mnth > 7 ? (yr +"/"+(yr+1)) : ((yr-1) +"/"+yr);
 const z = {"filter":{"League Type":["Mens League","exact"],"League Year":[yrFilter,"exact"]},"page":[1,250],"getArrFunction":"getResultTable","id":"tblResults","display":"table-break","colData":[{"col":"League Year","filter":"dropdown"},{"col":"League Type","filter":"dropdown"}],"sort":["-League Points"]};
 docReady(function () {
-	var a = getLocal("arrSettings_" + z.id);
+	var a = JSON.parse(getLocal("arrSettings_" + z.id));
 	var b = a == null ? z : a;
 	arrAdjust(b);
 });
