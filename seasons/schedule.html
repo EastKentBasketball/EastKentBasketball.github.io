@@ -12,7 +12,7 @@ breadcrumbs: "1"
 <div id=tbl></div>
 <script>
 
-const z = {"filter":{"Game Status":["To Play","exact"]},"sort":["Date"],"page":[1,250],"getArrFunction":"getLeagueTable","id":"tbl","display":"table-break","colData":[{"col":"League Year","filter":"dropdown"},{"col":"League Type","filter":"dropdown"},{"col":"Home Score","hide":"1"},{"col":"Away Score","hide":"1"},{"col":"MVP","hide":"1"},{"col":"Comments/Additional Details","hide":"1"},{"col":"Match Sheet Photo","hide":"1"},{"col":"Game Status","hide":"2","filter":"dropdown"},{"col":"Referee 1","hide":"1"},{"col":"Referee 2","hide":"1"},{"col":"Date","type":"date"},{"col":"Comment","hide":"2"},{"col":"Submit Result","hide":"1"}]};
+const z = {"filter":{"Game Status":["To Play","exact"]},"sort":["Date"],"page":[1,250],"getArrFunction":"getLeagueTable","id":"tbl","display":"table-break","colData":[{"col":"Submit Result","type":"masked-url"},{"col":"Match Sheet Photo","type":"masked-url"},{"col":"League Year","filter":"dropdown"},{"col":"League Type","filter":"dropdown"},{"col":"Home Score","hide":"1"},{"col":"Away Score","hide":"1"},{"col":"MVP","hide":"1"},{"col":"Comments/Additional Details","hide":"1"},{"col":"Match Sheet Photo","hide":"1"},{"col":"Game Status","hide":"2","filter":"dropdown"},{"col":"Referee 1","hide":"1"},{"col":"Referee 2","hide":"1"},{"col":"Date","type":"date"},{"col":"Comment","hide":"2"},{"col":"Submit Result","hide":"1"}]};
 docReady(function () {
 	arrAdjust(z);
 });
