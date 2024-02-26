@@ -75,6 +75,8 @@ async function getLeagueTable(resultTable = false){
 		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]) : _leagueTable;
 		if (resultTable){return buildResultTable(_joinTable);}
 		_joinTable.forEach(function(item, index) {
+			item["Home Score"] = +item["Home Score"] || 0; // convert to number
+			item["Away Score"] = +item["Away Score"] || 0; // convert to number
 			var MatchDate = new Date(item.Date).getTime();
 			var dateNow = new Date(UTCString(true)).getTime();
 			if (item["Timestamp"] !== undefined){
