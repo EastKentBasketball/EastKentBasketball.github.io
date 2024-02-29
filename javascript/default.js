@@ -80,6 +80,11 @@ async function getLeagueTable(resultTable = false){
 			var MatchDate = new Date(item.Date).getTime();
 			var dateNow = new Date(UTCString(true)).getTime();
 			if (item["Timestamp"] !== undefined){
+				if(item["Game Status"] == "Home Forfeit"){
+					item["Away Score"] = 20;
+				}else if(item["Game Status"] == "Away Forfeit"){	
+					item["Home Score"] = 20;
+				}	
 				var SubmitTime = timestampToDateObj(item["Timestamp"]).getTime();
 				if ((MatchDate + _maxDaysForSubmission) < SubmitTime){
 					item["Game Status"] = "Submit Late";
