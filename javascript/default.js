@@ -40,12 +40,12 @@ function buildResultTable(arr){
 			obj["Home Score"] = 20;
 		}	  
 		if(obj["Home Score"] > obj["Away Score"]){
-			acc[keyHome]["League Points"]+=3;
+			acc[keyHome]["League Points"]+=2;
 			acc[keyHome]["Won"]++;
 			acc[key2]["League Points"]++;
 			acc[key2]["Lost"]++;
 		} else if(obj["Home Score"] < obj["Away Score"]) {
-			acc[key2]["League Points"]+=3;
+			acc[key2]["League Points"]+=2;
 			acc[key2]["Won"]++;
 			acc[keyHome]["League Points"]++;
 			acc[keyHome]["Lost"]++;
