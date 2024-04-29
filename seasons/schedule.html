@@ -21,8 +21,11 @@ var mnth = new Date().getMonth();
 var yrFilter = mnth > 7 ? (yr +"/"+(yr+1)) : ((yr-1) +"/"+yr);
 const z = {"filter":{"Game Status":["To Play","exact"],"League Year":[yrFilter,"exact"]},"sort":["Date"],"page":[1,250],"getArrFunction":"getLeagueTable","id":"tblSchedule","display":"table-break","colData":["filter",{"col":"Submit Result","type":"masked-url"},{"col":"Match Sheet Photo","type":"masked-url"},{"col":"League Year","filter":"dropdown"},{"col":"League Type","filter":"dropdown"},{"col":"Home Score","hide":"1"},{"col":"Away Score","hide":"1"},{"col":"MVP","hide":"1"},{"col":"Comments/Additional Details","hide":"1"},{"col":"Match Sheet Photo","hide":"1"},{"col":"Game Status","hide":"2","filter":"dropdown"},{"col":"Referee 1","hide":"1"},{"col":"Referee 2","hide":"1"},{"col":"Date","type":"date"},{"col":"Comment","hide":"2"},{"col":"Submit Result","hide":"1"}]};
 docReady(function () {
+	showErrors = true;
 	var a = JSON.parse(getLocal("arrSettings_" + z.id));
 	var b = a == null ? z : a;
 	arrAdjust(b);
+	showErrors = false;
 });
+
 </script>
