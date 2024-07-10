@@ -8,7 +8,7 @@ title: "Contacts"
 path: "Test-Contacts"
 breadcrumbs: "1"
 ---
-<script src="https://jovialbadger.co.uk/javascript/tables.js"></script>
+<!-- <script src="https://jovialbadger.co.uk/javascript/tables.js"></script>
 <a style="text-align: center;background-color: var(--green-color);width: 100%;display: block;border: none;padding: var(--padding);border-radius: var(--radius);margin: var(--padding) 0;cursor: pointer;" href="https://forms.gle/TYT1YJ9cyfvowZU9A" target="_blank">Clubs League Submission Form</a>
 <button onclick="forceContactRefresh()">Refresh Table</button>
 <table id=tbl class="break-table"></table>
@@ -17,7 +17,8 @@ function forceContactRefresh(){
 	delLocal("ContactTable");
 	getContactTable();
 }
-
+//team
+//
 var _contactTable = null;
 async function getContactTable(){
 	_contactTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "OBJECT", "ContactTable");
@@ -36,5 +37,17 @@ async function getContactTable(){
 
 docReady(function () {
 	getContactTable();
+});
+</script> -->
+<div id=tblClubs></div>
+<script>
+var yr = new Date().getFullYear();
+var mnth = new Date().getMonth();
+var yrFilter = mnth > 7 ? (yr +"/"+(yr+1)) : ((yr-1) +"/"+yr);
+const z = {"filter":{"League Year":[yrFilter,"exact"]},"getArrFunction":"getClubList","id":"tblClubs","display":"table-break","colData":[{"col":"League Year","filter":"dropdown"},{"col":"Court Address","hide":"1"},{"col":"Primary Playing Night","hide":"1"},{"col":"Primary Tip Time","hide":"1"},{"col":"Alternative Playing Nights-Tip Times [If Applicable]","hide":"1"},{"col":"Junior Teams","hide":"1"},{"col":"Facebook Link","hide":"1","type":"masked-url"},{"col":"Twitter Link","hide":"1","type":"masked-url"},{"col":"Instagram Link","hide":"1","type":"masked-url"},{"col":"Club Website","hide":"1","type":"masked-url"},{"col":"Club Synopsis","hide":"1"}],"sort":["Club Name"]};
+docReady(function () {
+	var a = JSON.parse(getLocal("arrSettings_" + z.id));
+	var b = a == null ? z : a;
+	arrAdjust(b);
 });
 </script>

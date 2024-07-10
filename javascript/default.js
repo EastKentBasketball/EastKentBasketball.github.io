@@ -113,3 +113,11 @@ async function getLeagueTable(resultTable = false){
 		getElem('tbl').insertAdjacentHTML("beforebegin", "Error Download Failed");
 	}
 }
+
+
+async function getClubList(){
+	return await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "OBJECT", "ClubList", (60*60));
+}
+async function getTeamList(){
+	return await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=1431975959&single=true&output=csv", "OBJECT", "TeamList", (60*60));
+}
