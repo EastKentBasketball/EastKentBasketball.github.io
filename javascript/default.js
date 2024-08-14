@@ -117,7 +117,21 @@ async function getLeagueTable(resultTable = false){
 
 async function getClubList(){
 	return await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "OBJECT", "ClubList", (60*60));
+	//var _teamList = await getTeamList();
+	//return_teamList != null ? leftJoinObjects(_clubList, _teamList,["League Year","Club Name"]) : _clubList;
 }
 async function getTeamList(){
-	return await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=1431975959&single=true&output=csv", "OBJECT", "TeamList", (60*60));
+	var x =  await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=1431975959&single=true&output=csv", "OBJECT", "TeamList", (60*60));
+	return renameKeyInArrOfObj(x,"Club Affiliation","Club Name")
+}
+
+function renameKeyInArrOfObj(arr, key, newkey){
+	return arr.map(item => {
+      var temp = item[key];
+      delete item[key];
+      return {
+        ...item,
+        [newkey]: temp
+      };
+	});   
 }
