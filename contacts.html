@@ -44,7 +44,7 @@ docReady(function () {
 var yr = new Date().getFullYear();
 var mnth = new Date().getMonth();
 var yrFilter = mnth > 7 ? (yr +"/"+(yr+1)) : ((yr-1) +"/"+yr);
-const z = {"filter":{"League Year":[yrFilter,"exact"]},"getArrFunction":"getClubList","id":"tblClubs","display":"table-break","colData":[{"col":"League Year","filter":"dropdown"},{"col":"Court Address","hide":"1"},{"col":"Primary Playing Night","hide":"1"},{"col":"Primary Tip Time","hide":"1"},{"col":"Alternative Playing Nights-Tip Times [If Applicable]","hide":"1"},{"col":"Junior Teams","hide":"1"},{"col":"Facebook Link","hide":"1","type":"masked-url"},{"col":"Twitter Link","hide":"1","type":"masked-url"},{"col":"Instagram Link","hide":"1","type":"masked-url"},{"col":"Club Website","hide":"1","type":"masked-url"},{"col":"Club Synopsis","hide":"1"}],"sort":["Club Name"]};
+const z = {"getArrFunction":"getClubList","id":"tblClubs","display":"table-break","colData":[{"col":"League Year","filter":"dropdown"},{"col":"Court Address","hide":"1"},{"col":"Primary Playing Night","hide":"1"},{"col":"Primary Tip Time","hide":"1"},{"col":"Alternative Playing Nights-Tip Times [If Applicable]","hide":"1"},{"col":"Junior Teams","hide":"1"},{"col":"Facebook Link","hide":"1","type":"masked-url"},{"col":"Twitter Link","hide":"1","type":"masked-url"},{"col":"Instagram Link","hide":"1","type":"masked-url"},{"col":"Club Website","hide":"1","type":"masked-url"},{"col":"Club Synopsis","hide":"1"}],"sort":["Club Name"]};
 docReady(function () {
 	var a = JSON.parse(getLocal("arrSettings_" + z.id));
 	var b = a == null ? z : a;
