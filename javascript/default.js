@@ -142,7 +142,7 @@ function renameKeyInArrOfObj(arr, key, newkey){
 	});   
 }
 
-function showTeams(team = ""){
+async function showTeams(team = ""){
 	var a = await getTeamList(team);
 	buildCards("tblClubs", a, "Club Affiliation");
 	getElem('tblClubs').insertAdjacentHTML("afterbegin", "<button onclick='showClubs()'>Back To Club List</button>");
