@@ -116,13 +116,15 @@ async function getLeagueTable(resultTable = false){
 
 
 async function getClubList(){
-	return await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "OBJECT", "ClubList", (60*60));
+	var x = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "OBJECT", "ClubList", (60*60));
+	return x.forEach((item,i,array) => {item["Show Teams"] = "<span onclick='showTeams(\"" + item["Club Name"] + "\")'>Click Here</span>";});
 }
 async function getTeamList(team = ""){
 	var x =  await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=1431975959&single=true&output=csv", "OBJECT", "TeamList", (60*60));
 	//var y = renameKeyInArrOfObj(x,"Club Affiliation","Club Name")
 	if(team != ""){
-		return arrFilter(x,{"Club Affiliation": [team,"exact"]});
+		var y = arrFilter(x,{"Club Affiliation": [team,"exact"]});
+		return y;
 	} else{
 		return x;
 	}
@@ -137,4 +139,15 @@ function renameKeyInArrOfObj(arr, key, newkey){
         [newkey]: temp
       };
 	});   
+}
+
+function showTeams(team = ""){
+	buildCards("tblClubs", getTeamList(team), "Club Affiliation");
+	getElem('tblClubs').insertAdjacentHTML("afterbegin", "<button onclick='showClubs()'>Back To Club List</button>");
+}
+function showClubs(){
+	const z = {"getArrFunction":"getClubList","id":"tblClubs","display":"cards","displaySettings":{"idKey":"Club Name"},"colData":[{"col":"League Year","filter":"dropdown"},{"col":"Court Address","hide":"1"},{"col":"Primary Playing Night","hide":"1"},{"col":"Primary Tip Time","hide":"1"},{"col":"Alternative Playing Nights-Tip Times [If Applicable]","hide":"1"},{"col":"Junior Teams","hide":"1"},{"col":"Facebook Link","hide":"1","type":"masked-url"},{"col":"Twitter Link","hide":"1","type":"masked-url"},{"col":"Instagram Link","hide":"1","type":"masked-url"},{"col":"Club Website","hide":"1","type":"masked-url"},{"col":"Club Synopsis","hide":"1"}],"sort":["Club Name"]};
+	var a = JSON.parse(getLocal("arrSettings_" + z.id));
+	var b = a == null ? z : a;
+	arrAdjust(b);
 }
