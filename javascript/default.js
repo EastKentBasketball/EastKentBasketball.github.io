@@ -143,7 +143,8 @@ function renameKeyInArrOfObj(arr, key, newkey){
 }
 
 function showTeams(team = ""){
-	buildCards("tblClubs", getTeamList(team), "Club Affiliation");
+	var a = await getTeamList(team);
+	buildCards("tblClubs", a, "Club Affiliation");
 	getElem('tblClubs').insertAdjacentHTML("afterbegin", "<button onclick='showClubs()'>Back To Club List</button>");
 }
 function showClubs(){
