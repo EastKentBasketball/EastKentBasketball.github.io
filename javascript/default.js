@@ -108,11 +108,11 @@ async function getLeagueTable(resultTable = false){
 			delete item["Timestamp"];
 			//delete item["Game Status"];
 			var x = arrFilter(clubTable,{"League Year": [item["League Year"],"exact"],"Club Name":[item["Home Team"],"filtercontains"]});
-			if(x.length > 0){
-				item["Court Address"] = x["Court Address"];
-				item["Primary Playing Night"] = x["Primary Playing Night"];
-				item["Primary Tip Time"] = x["Primary Tip Time"];
-				item["Alternative Playing Nights-Tip Times [If Applicable]"] = x["Alternative Playing Nights-Tip Times [If Applicable]"];
+			if(x.length == 1){
+				item["Court Address"] = x[0]["Court Address"];
+				item["Primary Playing Night"] = x[0]["Primary Playing Night"];
+				item["Primary Tip Time"] = x[0]["Primary Tip Time"];
+				item["Alternative Playing Nights-Tip Times [If Applicable]"] = x[0]["Alternative Playing Nights-Tip Times [If Applicable]"];
 			}
 		});
 		return (_joinTable)
