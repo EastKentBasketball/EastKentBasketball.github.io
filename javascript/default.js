@@ -74,6 +74,7 @@ async function getLeagueTable(resultTable = false){
 		_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "OBJECT", "ResultsTable", (60*60));
 		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]) : _leagueTable;
 		if (resultTable){return buildResultTable(_joinTable);}
+		var clubTable = await getClubList();
 		_joinTable.forEach(function(item, index) {
 			item["Home Score"] = +item["Home Score"] || 0; // convert to number
 			item["Away Score"] = +item["Away Score"] || 0; // convert to number
@@ -106,7 +107,13 @@ async function getLeagueTable(resultTable = false){
 			if(item["Comment"] == "Game Removed"){item["Game Status"] = item.Winner = "Removed";}
 			delete item["Timestamp"];
 			//delete item["Game Status"];
-			
+			var x = arrFilter(clubTable,{"League Year": [item["League Year"],"exact"],"Club Name":[item["Home Team"],"filtercontains"]});
+			if(x.length > 0){
+				item["Court Address"] = x["Court Address"];
+				item["Primary Playing Night"] = x["Primary Playing Night"];
+				item["Primary Tip Time"] = x["Primary Tip Time"];
+				item["Alternative Playing Nights-Tip Times [If Applicable]"] = x["Alternative Playing Nights-Tip Times [If Applicable]"];
+			}
 		});
 		return (_joinTable)
 	} else {
