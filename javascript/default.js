@@ -76,9 +76,9 @@ async function getLeagueTable(resultTable = false){
 		var teamTable = await getTeamList();
 		var clubTable = await getClubList();
 		_joinTable.forEach(function(item, index) {
-			var homeTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Home Team"],"filtercontains"]});
+			var homeTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Home Team"],"filtercontains"],"Team Type":[item["League Type"],"filtercontains"]});
 			if(homeTeam.length == 1 && homeTeam[0]["Display Name"] != ""){item["Home Team"] = homeTeam[0]["Club Affiliation"] + " (" + homeTeam[0]["Display Name"] + ")";}
-			var awayTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Away Team"],"filtercontains"]});
+			var awayTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Away Team"],"filtercontains"],"Team Type":[item["League Type"],"filtercontains"]});
 			if(awayTeam.length == 1 && awayTeam[0]["Display Name"] != ""){item["Away Team"] = awayTeam[0]["Club Affiliation"] + " (" + awayTeam[0]["Display Name"] + ")";}
 			if(!resultTable){
 				item["Home Score"] = +item["Home Score"] || 0; // convert to number
