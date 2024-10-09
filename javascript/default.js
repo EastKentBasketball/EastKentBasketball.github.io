@@ -79,7 +79,7 @@ async function getLeagueTable(resultTable = false){
 			var homeTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Home Team"],"filtercontains"]});
 			if(homeTeam.length == 1 && homeTeam["Display Name"] != ""){item["Home Team"] = homeTeam["Club Affiliation"] + " (" + homeTeam["Display Name"] + ")";}
 			var awayTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Away Team"],"filtercontains"]});
-			if(homeTeam.length == 1 && awayTeam["Display Name"] != ""){item["Away Team"] = awayTeam["Club Affiliation"] + " (" + awayTeam["Display Name"] + ")";}
+			if(awayTeam.length == 1 && awayTeam["Display Name"] != ""){item["Away Team"] = awayTeam["Club Affiliation"] + " (" + awayTeam["Display Name"] + ")";}
 			if(!resultTable){
 				item["Home Score"] = +item["Home Score"] || 0; // convert to number
 				item["Away Score"] = +item["Away Score"] || 0; // convert to number
