@@ -73,48 +73,55 @@ async function getLeagueTable(resultTable = false){
 	if (_leagueTable != null) {
 		_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "OBJECT", "ResultsTable", (60*60));
 		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]) : _leagueTable;
-		if (resultTable){return buildResultTable(_joinTable);}
+		var teamTable = await getTeamList();
 		var clubTable = await getClubList();
 		_joinTable.forEach(function(item, index) {
-			item["Home Score"] = +item["Home Score"] || 0; // convert to number
-			item["Away Score"] = +item["Away Score"] || 0; // convert to number
-			var MatchDate = new Date(item.Date).getTime();
-			var dateNow = new Date(UTCString(true)).getTime();
-			if (item["Timestamp"] !== undefined){
-				if(item["Game Status"] == "Home Forfeit"){
-					item["Away Score"] = 20;
-				}else if(item["Game Status"] == "Away Forfeit"){	
-					item["Home Score"] = 20;
-				}	
-				var SubmitTime = timestampToDateObj(item["Timestamp"]).getTime();
-				if ((MatchDate + _maxDaysForSubmission) < SubmitTime){
-					item["Game Status"] = "Submit Late";
+			var homeTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Home Team"],"filtercontains"]});
+			if(homeTeam["Display Name"] != ""){item["Home Team"] = homeTeam["Club Affiliation"] + " (" + homeTeam["Display Name"] + ")";}
+			var awayTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Away Team"],"filtercontains"]});
+			if(awayTeam["Display Name"] != ""){item["Away Team"] = awayTeam["Club Affiliation"] + " (" + awayTeam["Display Name"] + ")";}
+			if(!resultTable){
+				item["Home Score"] = +item["Home Score"] || 0; // convert to number
+				item["Away Score"] = +item["Away Score"] || 0; // convert to number
+				var MatchDate = new Date(item.Date).getTime();
+				var dateNow = new Date(UTCString(true)).getTime();
+				if (item["Timestamp"] !== undefined){
+					if(item["Game Status"] == "Home Forfeit"){
+						item["Away Score"] = 20;
+					}else if(item["Game Status"] == "Away Forfeit"){	
+						item["Home Score"] = 20;
+					}	
+					var SubmitTime = timestampToDateObj(item["Timestamp"]).getTime();
+					if ((MatchDate + _maxDaysForSubmission) < SubmitTime){
+						item["Game Status"] = "Submit Late";
+					}
+					if (item["Home Score"] > item["Away Score"]){
+						item.Winner = item["Home Team"];
+					} else if(item["Home Score"] < item["Away Score"]){
+						item.Winner = item["Away Team"];			
+					} else {
+						item.Winner = "Draw";
+					}
+				} else{
+					item["Game Status"] = "To Play";
+					item["Submit Result"] = "https://docs.google.com/forms/d/e/1FAIpQLSe_zCLLs9ADsMD2oUFQ76WKY2ZMayX_5tVO2M4h4FNhK1RhLA/viewform?usp=pp_url&entry.821820740=" + item['League Year'] + "&entry.492201271=" + item['League Type'].replace(' ', '+') + "&entry.1142329140=" + item['Match Number'];
 				}
-				if (item["Home Score"] > item["Away Score"]){
-					item.Winner = item["Home Team"];
-				} else if(item["Home Score"] < item["Away Score"]){
-					item.Winner = item["Away Team"];			
-				} else {
-					item.Winner = "Draw";
+				if (item["Timestamp"] === undefined && ((MatchDate + _maxDaysForSubmission) < dateNow)){
+					item.Winner = "Late To Submit";
 				}
-			} else{
-				item["Game Status"] = "To Play";
-				item["Submit Result"] = "https://docs.google.com/forms/d/e/1FAIpQLSe_zCLLs9ADsMD2oUFQ76WKY2ZMayX_5tVO2M4h4FNhK1RhLA/viewform?usp=pp_url&entry.821820740=" + item['League Year'] + "&entry.492201271=" + item['League Type'].replace(' ', '+') + "&entry.1142329140=" + item['Match Number'];
-			}
-			if (item["Timestamp"] === undefined && ((MatchDate + _maxDaysForSubmission) < dateNow)){
-				item.Winner = "Late To Submit";
-			}
-			if(item["Comment"] == "Game Removed"){item["Game Status"] = item.Winner = "Removed";}
-			delete item["Timestamp"];
-			//delete item["Game Status"];
-			var x = arrFilter(clubTable,{"League Year": [item["League Year"],"exact"],"Club Name":[item["Home Team"],"filtercontains"]});
-			if(x.length == 1){
-				item["Court Address"] = x[0]["Court Address"];
-				item["Primary Playing Night"] = x[0]["Primary Playing Night"];
-				item["Primary Tip Time"] = x[0]["Primary Tip Time"];
-				item["Alternative Playing Nights-Tip Times [If Applicable]"] = x[0]["Alternative Playing Nights-Tip Times [If Applicable]"];
+				if(item["Comment"] == "Game Removed"){item["Game Status"] = item.Winner = "Removed";}
+				delete item["Timestamp"];
+				//delete item["Game Status"];
+				var x = arrFilter(clubTable,{"League Year": [item["League Year"],"exact"],"Club Name":[item["Home Team"],"filtercontains"]});
+				if(x.length == 1){
+					item["Court Address"] = x[0]["Court Address"];
+					item["Primary Playing Night"] = x[0]["Primary Playing Night"];
+					item["Primary Tip Time"] = x[0]["Primary Tip Time"];
+					item["Alternative Playing Nights-Tip Times [If Applicable]"] = x[0]["Alternative Playing Nights-Tip Times [If Applicable]"];
+				}
 			}
 		});
+		if (resultTable){return buildResultTable(_joinTable);}
 		return (_joinTable)
 	} else {
 		getElem('tbl').insertAdjacentHTML("beforebegin", "Error Download Failed");
