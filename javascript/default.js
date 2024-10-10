@@ -26,10 +26,10 @@ function buildResultTable(arr){
 		if(obj["Comment"] == "Game Removed"){return acc;}
 		obj["Home Score"] = +obj["Home Score"] || 0; // convert to number
 		obj["Away Score"] = +obj["Away Score"] || 0; // convert to number
-		const keyHome = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Home Team"] + '_' + obj["Home Club"]; // unique combination of ids
-		const key2 = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Away Team"] + '_' + obj["Away Club"]; // unique combination of ids
-		acc[keyHome] = acc[keyHome] || {"League Year":obj["League Year"],"League Type":obj["League Type"],"Club":obj["Home Club"],"Team":obj["Home Team"],"Games":0,"Forfeit":0,"Won":0,"Lost":0,"Points For":0,"Points Against":0,"Point Difference":0,"League Points":0};
-		acc[key2] = acc[key2] || {"League Year":obj["League Year"],"League Type":obj["League Type"],"Club":obj["Away Club"],"Team":obj["Away Team"],"Games":0,"Forfeit":0,"Won":0,"Lost":0,"Points For":0,"Points Against":0,"Point Difference":0,"League Points":0};
+		const keyHome = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Home Team"] + '_' + obj["Home Club"] + '_' + obj["Competition"]; // unique combination of ids
+		const key2 = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Away Team"] + '_' + obj["Away Club"] + '_' + obj["Competition"]; // unique combination of ids
+		acc[keyHome] = acc[keyHome] || {"League Year":obj["League Year"],"League Type":obj["League Type"],"Competition":obj["Competition"],"Club":obj["Home Club"],"Team":obj["Home Team"],"Games":0,"Forfeit":0,"Won":0,"Lost":0,"Points For":0,"Points Against":0,"Point Difference":0,"League Points":0};
+		acc[key2] = acc[key2] || {"League Year":obj["League Year"],"League Type":obj["League Type"],"Competition":obj["Competition"],"Club":obj["Away Club"],"Team":obj["Away Team"],"Games":0,"Forfeit":0,"Won":0,"Lost":0,"Points For":0,"Points Against":0,"Point Difference":0,"League Points":0};
 		if(obj["Game Status"] == "Home Forfeit"){
 			acc[keyHome]["Forfeit"]++;
 			acc[keyHome]["League Points"]--;
