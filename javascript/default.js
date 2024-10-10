@@ -26,8 +26,8 @@ function buildResultTable(arr){
 		if(obj["Comment"] == "Game Removed"){return acc;}
 		obj["Home Score"] = +obj["Home Score"] || 0; // convert to number
 		obj["Away Score"] = +obj["Away Score"] || 0; // convert to number
-		const keyHome = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Home Team"]; // unique combination of ids
-		const key2 = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Away Team"]; // unique combination of ids
+		const keyHome = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Home Team"] + '_' + obj["Home Club"]; // unique combination of ids
+		const key2 = obj["League Year"] + '_' + obj["League Type"] + '_' + obj["Away Team"] + '_' + obj["Away Club"]; // unique combination of ids
 		acc[keyHome] = acc[keyHome] || {"League Year":obj["League Year"],"League Type":obj["League Type"],"Team":obj["Home Team"],"Games":0,"Forfeit":0,"Won":0,"Lost":0,"Points For":0,"Points Against":0,"Point Difference":0,"League Points":0};
 		acc[key2] = acc[key2] || {"League Year":obj["League Year"],"League Type":obj["League Type"],"Team":obj["Away Team"],"Games":0,"Forfeit":0,"Won":0,"Lost":0,"Points For":0,"Points Against":0,"Point Difference":0,"League Points":0};
 		if(obj["Game Status"] == "Home Forfeit"){
@@ -72,13 +72,13 @@ async function getLeagueTable(resultTable = false){
 	var _leagueTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vS2lKSaFjfsuZK7Lseo_HsGYhq1VpQQ_qRqntI2NQqc8qlCRAY919Zje_IaCbsorgAgtA-8noCqHyWL/pub?gid=197807890&single=true&output=csv", "OBJECT", "LeagueTable", (60*60));
 	if (_leagueTable != null) {
 		_resultsTable = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSfCDBr6vjSUVxA41chCnyUR46oNnPVyzCyS0_NbvLbk_9eh0Got1BPnZkIKmDngC2bp0bshVm3NiK2/pub?gid=1564670715&single=true&output=csv", "OBJECT", "ResultsTable", (60*60));
-		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Match Number"]) : _leagueTable;
+		_joinTable =_resultsTable != null ? leftJoinObjects(_leagueTable, _resultsTable,["League Year","League Type","Competition","Match Number"]) : _leagueTable;
 		var teamTable = await getTeamList();
 		var clubTable = await getClubList();
 		_joinTable.forEach(function(item, index) {
-			var homeTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Home Team"],"filtercontains"],"Team Type":[item["League Type"],"filtercontains"]});
+			var homeTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Home Club"],"exact"],"Team Type":[item["League Type"],"exact"],"Team Name":[item["Home Team"],"exact"]});
 			if(homeTeam.length == 1 && homeTeam[0]["Display Name"] != ""){item["Home Team"] = homeTeam[0]["Club Affiliation"] + " (" + homeTeam[0]["Display Name"] + ")";}
-			var awayTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Away Team"],"filtercontains"],"Team Type":[item["League Type"],"filtercontains"]});
+			var awayTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Away Club"],"exact"],"Team Type":[item["League Type"],"exact"],"Team Name":[item["Away Team"],"exact"]});
 			if(awayTeam.length == 1 && awayTeam[0]["Display Name"] != ""){item["Away Team"] = awayTeam[0]["Club Affiliation"] + " (" + awayTeam[0]["Display Name"] + ")";}
 			if(!resultTable){
 				item["Home Score"] = +item["Home Score"] || 0; // convert to number
@@ -104,7 +104,7 @@ async function getLeagueTable(resultTable = false){
 					}
 				} else{
 					item["Game Status"] = "To Play";
-					item["Submit Result"] = "https://docs.google.com/forms/d/e/1FAIpQLSe_zCLLs9ADsMD2oUFQ76WKY2ZMayX_5tVO2M4h4FNhK1RhLA/viewform?usp=pp_url&entry.821820740=" + item['League Year'] + "&entry.492201271=" + item['League Type'].replace(' ', '+') + "&entry.1142329140=" + item['Match Number'];
+					item["Submit Result"] = "https://docs.google.com/forms/d/e/1FAIpQLSe_zCLLs9ADsMD2oUFQ76WKY2ZMayX_5tVO2M4h4FNhK1RhLA/viewform?usp=pp_url&entry.821820740=" + item['League Year'] + "&entry.492201271=" + item['League Type'].replace(' ', '+') + "&entry.530082834=" + item['Competition'].replace(' ', '+') + "&entry.1142329140=" + item['Match Number'];
 				}
 				if (item["Timestamp"] === undefined && ((MatchDate + _maxDaysForSubmission) < dateNow)){
 					item.Winner = "Late To Submit";
