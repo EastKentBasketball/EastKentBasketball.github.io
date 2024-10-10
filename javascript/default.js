@@ -104,7 +104,7 @@ async function getLeagueTable(resultTable = false){
 					}
 				} else{
 					item["Game Status"] = "To Play";
-					item["Submit Result"] = "https://docs.google.com/forms/d/e/1FAIpQLSe_zCLLs9ADsMD2oUFQ76WKY2ZMayX_5tVO2M4h4FNhK1RhLA/viewform?usp=pp_url&entry.821820740=" + item['League Year'] + "&entry.492201271=" + item['League Type'].replace(' ', '+') + "&entry.530082834=" + item['Competition'].replace(' ', '+') + "&entry.1142329140=" + item['Match Number'];
+					item["Submit Result"] = "https://docs.google.com/forms/d/e/1FAIpQLSe_zCLLs9ADsMD2oUFQ76WKY2ZMayX_5tVO2M4h4FNhK1RhLA/viewform?usp=pp_url&entry.821820740=" + item['League Year'] + "&entry.530082834=" + item['Competition'].replace(' ', '+') + "&entry.1142329140=" + item['Match Number']+ "&entry.492201271=" + item['League Type'].replace(' ', '+');
 				}
 				if (item["Timestamp"] === undefined && ((MatchDate + _maxDaysForSubmission) < dateNow)){
 					item.Winner = "Late To Submit";
