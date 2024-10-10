@@ -112,7 +112,7 @@ async function getLeagueTable(resultTable = false){
 				if(item["Comment"] == "Game Removed"){item["Game Status"] = item.Winner = "Removed";}
 				delete item["Timestamp"];
 				//delete item["Game Status"];
-				var x = arrFilter(clubTable,{"League Year": [item["League Year"],"exact"],"Club Name":[item["Home Team"],"filtercontains"]});
+				var x = arrFilter(clubTable,{"League Year": [item["League Year"],"exact"],"Club Name":[item["Home Club"],"filtercontains"]});
 				if(x.length == 1){
 					item["Court Address"] = x[0]["Court Address"];
 					item["Primary Playing Night"] = x[0]["Primary Playing Night"];
