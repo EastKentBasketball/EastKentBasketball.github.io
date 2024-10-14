@@ -17,7 +17,10 @@ var yrFilter = mnth > 7 ? (yr +"/"+(yr+1)) : ((yr-1) +"/"+yr);
 const z = {"filter":{"League Type":["Men's","exact"],"League Year":[yrFilter,"exact"],"Competition":["League A","exact"]},"getArrFunction":"getResultTable","id":"tblResults","display":"table-break","colData":[{"col":"League Year","filter":"dropdown"},{"col":"League Type","filter":"dropdown"},{"col":"Competition","filter":"dropdown"}],"sort":["-League Points"]};
 docReady(function () {
 	var a = JSON.parse(getLocal("arrSettings_" + z.id));
-	var b = a == null ? z : a;
-	arrAdjust(b);
+	if(a != null){
+        z["filter"] = a["filter"];
+        z["sort"] = a["sort"];
+	}
+	arrAdjust(z);
 });
 </script>

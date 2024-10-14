@@ -17,8 +17,11 @@ async function getHistoricResults(){
 const z = {"filter":{"Type":["Adrian Cook Cup Champions","exact"]},"sort":["-Season"],"page":[1,250],"getArrFunction":"getHistoricResults","id":"tblHistoricResults","display":"table-break","colData":[{"col":"Type","filter":"dropdown","hide":"2"}]};
 docReady(function () {
 	var a = JSON.parse(getLocal("arrSettings_" + z.id));
-	var b = a == null ? z : a;
-	arrAdjust(b);
+	if(a != null){
+        z["filter"] = a["filter"];
+        z["sort"] = a["sort"];
+	}
+	arrAdjust(z);
 });
 </script>
 
