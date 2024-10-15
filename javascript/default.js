@@ -96,9 +96,9 @@ async function getLeagueTable(resultTable = false){
 						item["Game Status"] = "Submit Late";
 					}
 					if (item["Home Score"] > item["Away Score"]){
-						item.Winner = item["Home Team"];
+						item.Winner = item["Home Club"] + " - " + item["Home Team"];
 					} else if(item["Home Score"] < item["Away Score"]){
-						item.Winner = item["Away Team"];			
+						item.Winner = item["Away Club"] + " - " + item["Away Team"];			
 					} else {
 						item.Winner = "Draw";
 					}
