@@ -77,9 +77,15 @@ async function getLeagueTable(resultTable = false){
 		var clubTable = await getClubList();
 		_joinTable.forEach(function(item, index) {
 			var homeTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Home Club"],"exact"],"Team Type":[item["League Type"],"exact"],"Team Name":[item["Home Team"],"exact"]});
-			if(homeTeam.length == 1 && homeTeam[0]["Display Name"] != ""){item["Home Team"] = homeTeam[0]["Display Name"] + " (" + item["Home Team"] + ")";}
+			if(homeTeam.length == 1 && homeTeam[0]["Display Name"] != ""){
+				item["Home Team"] = homeTeam[0]["Display Name"] + " (" + item["Home Team"] + ")";
+				item["Home Club"] = homeTeam[0]?.["Override Club Name"] == "Yes" ? homeTeam[0]["Display Name"] : item["Home Club"];
+			}
 			var awayTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Away Club"],"exact"],"Team Type":[item["League Type"],"exact"],"Team Name":[item["Away Team"],"exact"]});
-			if(awayTeam.length == 1 && awayTeam[0]["Display Name"] != ""){item["Away Team"] = awayTeam[0]["Display Name"] + " (" + item["Away Team"] + ")";}
+			if(awayTeam.length == 1 && awayTeam[0]["Display Name"] != ""){
+				item["Away Team"] = awayTeam[0]["Display Name"] + " (" + item["Away Team"] + ")";
+				item["Away Club"] = awayTeam[0]?.["Override Club Name"] == "Yes" ? awayTeam[0]["Display Name"] : item["Away Club"];
+			}
 			if(!resultTable){
 				item["Home Score"] = +item["Home Score"] || 0; // convert to number
 				item["Away Score"] = +item["Away Score"] || 0; // convert to number
