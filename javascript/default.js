@@ -76,12 +76,12 @@ async function getLeagueTable(resultTable = false){
 		var teamTable = await getTeamList();
 		var clubTable = await getClubList();
 		_joinTable.forEach(function(item, index) {
-			var homeTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Home Club"],"exact"],"Team Type":[item["League Type"],"exact"],"Team Name":[item["Home Team"],"exact"]});
+			var homeTeam = arrFilter(teamTable,{"filter":{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Home Club"],"exact"],"Team Type":[item["League Type"],"exact"],"Team Name":[item["Home Team"],"exact"]}});
 			if(homeTeam.length == 1 && homeTeam[0]["Display Name"] != ""){
 				item["Home Team"] = homeTeam[0]["Display Name"] + " (" + item["Home Team"] + ")";
 				item["Home Club"] = homeTeam[0]?.["Override Club Name"] == "Yes" ? homeTeam[0]["Display Name"] : item["Home Club"];
 			}
-			var awayTeam = arrFilter(teamTable,{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Away Club"],"exact"],"Team Type":[item["League Type"],"exact"],"Team Name":[item["Away Team"],"exact"]});
+			var awayTeam = arrFilter(teamTable,{"filter":{"League Year": [item["League Year"],"exact"],"Club Affiliation":[item["Away Club"],"exact"],"Team Type":[item["League Type"],"exact"],"Team Name":[item["Away Team"],"exact"]}});
 			if(awayTeam.length == 1 && awayTeam[0]["Display Name"] != ""){
 				item["Away Team"] = awayTeam[0]["Display Name"] + " (" + item["Away Team"] + ")";
 				item["Away Club"] = awayTeam[0]?.["Override Club Name"] == "Yes" ? awayTeam[0]["Display Name"] : item["Away Club"];
@@ -118,7 +118,7 @@ async function getLeagueTable(resultTable = false){
 				if(item["Comment"] == "Game Removed"){item["Game Status"] = item.Winner = "Removed";}
 				delete item["Timestamp"];
 				//delete item["Game Status"];
-				var x = arrFilter(clubTable,{"League Year": [item["League Year"],"exact"],"Club Name":[item["Home Club"],"filtercontains"]});
+				var x = arrFilter(clubTable,{"filter":{"League Year": [item["League Year"],"exact"],"Club Name":[item["Home Club"],"filtercontains"]}});
 				if(x.length == 1){
 					item["Court Address"] = x[0]["Court Address"];
 					item["Primary Playing Night"] = x[0]["Primary Playing Night"];
@@ -144,7 +144,7 @@ async function getTeamList(team = ""){
 	var x =  await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=1431975959&single=true&output=csv", "OBJECT", "TeamList", (7*24*60*60));
 	//var y = renameKeyInArrOfObj(x,"Club Affiliation","Club Name")
 	if(team != ""){
-		var y = arrFilter(x,{"Club Affiliation": [team,"exact"]});
+		var y = arrFilter(x,{"filter":{"Club Affiliation": [team,"exact"]}});
 		return y;
 	} else{
 		return x;
