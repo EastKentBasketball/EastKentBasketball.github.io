@@ -137,7 +137,10 @@ async function getLeagueTable(resultTable = false){
 
 async function getClubList(){
 	var x = await fetchData("https://docs.google.com/spreadsheets/d/e/2PACX-1vSBFzz85twDjZygxSXPle6b7tQIochbr3sVpeD6BnuUudu31QLDfYODAp9gmTbH2Et4OpWHNpx_eF-M/pub?gid=801951213&single=true&output=csv", "OBJECT", "ClubList", (7*24*60*60));
-	x.forEach((item,i,array) => {item["Show Teams"] = "<span onclick='showTeams(\"" + item["Club Name"] + "\")'>Click Here</span>";});
+	x.forEach((item,i,array) => {
+		item["Show Teams"] = "<span onclick='showTeams(\"" + item["Club Name"] + "\")'>Click Here</span>";
+		item["See Upcoming Games"] = "<span onclick='preFilter(\"" + item["Club Name"] + "\",\"" + item["League Year"] + "\")'>Click Here</span>";
+	});
 	return x;
 }
 async function getTeamList(team = ""){
@@ -172,4 +175,10 @@ function showClubs(){
 	var a = JSON.parse(getLocal("arrSettings_" + z.id));
 	var b = a == null ? z : a;
 	arrAdjust(b);
+}
+
+function preFilter(club,year){
+	var obj = {"Club":[club,"cols-exact"],"League Year":[year,"exact"],"Game Status":["To Play","exact"]}
+	setFiltering("tblSchedule",obj);
+	window.location.href="https://ekba.co.uk/seasons/schedule/";
 }
